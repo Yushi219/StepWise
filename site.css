@@ -58,11 +58,15 @@ body { background: #000; }
 #ch09 { display: block; height: 180vh; }
 #ch09 > .slide { position: sticky; top: 0; min-height: 100vh; align-items: flex-start; padding-block: clamp(40px, 6vh, 80px); }
 
-/* ch06 "How it fits Revit" — 3-part architecture grid collapses on narrow screens */
+/* "How it fits Revit" — horizontal model (management → native) collapses on narrow screens */
 @media (max-width: 900px) {
   .arch-grid { grid-template-columns: 1fr !important; }
   .arch-grid > .arch-arrow { display: none; }
 }
+/* the five native entry points sit in one full row, collapsing on smaller screens */
+.arch-entries { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 14px; align-items: start; }
+@media (max-width: 1200px) { .arch-entries { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 760px) { .arch-entries { grid-template-columns: 1fr; } }
 .slide__grid { display: grid; grid-template-columns: 0.92fr 1.08fr; gap: clamp(28px, 4vw, 64px); align-items: center; width: 100%; }
 .slide__grid--wide { grid-template-columns: 1fr; }
 @media (max-width: 920px) { .slide__grid { grid-template-columns: 1fr !important; } }
