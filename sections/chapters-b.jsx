@@ -45,7 +45,7 @@ function RealUI({ src, alt, callouts, dim, missingLabel }) {
   );
 }
 
-/* 07 · How it fits Revit — two parts. (A) The data model as four layers: native Revit
+/* 06 · How it fits Revit — two parts. (A) The data model as four layers: native Revit
    types stay the source of record; StepWise adds a management layer above them
    (Stair System / Typical Rule / Managed Exceptions) that references, never replaces.
    (B) Five native entry points where that layer surfaces inside the existing workflow:
@@ -86,13 +86,13 @@ function ChArchitecture() {
       </div>
     </div>);
   return (
-    <section ref={ref} data-screen-label="07 How it fits Revit" className="slide" style={{ background: "transparent" }}>
+    <section ref={ref} data-screen-label="06 How it fits Revit" className="slide" style={{ background: "transparent" }}>
       <div className="wrap" style={{ width: "100%", maxWidth: "min(1480px, 95vw)" }}>
         {/* header */}
         <div style={{ maxWidth: 880, marginBottom: 28, ...rev(0) }}>
-          <Eyebrow idx="07">{t("How it fits Revit", "与原生模型的融合")}</Eyebrow>
+          <Eyebrow idx="06">{t("How it fits Revit", "与原生模型的融合")}</Eyebrow>
           <h2 style={{ fontSize: "clamp(1.7rem,1.2rem+1.6vw,2.6rem)", fontWeight: 500, color: "#fff", letterSpacing: "-0.025em", margin: "14px 0 0", lineHeight: 1.12 }}>{t("StepWise adds a system-level management layer above Revit's existing types.", "StepWise 在 Revit 原有类型之上，加一层楼梯系统管理层。")}</h2>
-          <p style={{ fontSize: 15, color: "var(--text-on-dark-mid)", marginTop: 13, lineHeight: 1.55 }}>{t("StepWise does not replace Revit's existing stair, run, landing or railing types. It relates those scattered objects into one stair system, defines which levels inherit the typical rule and which are exceptions, and tracks which parameters are inherited or locally overridden, so Revit stays Revit, only better managed.", "StepWise 不替代 Revit 原有的 stair / run / landing / railing type，而是把这些分散的对象关联成一个楼梯系统，定义哪些楼层继承典型规则、哪些是例外，并记录哪些参数是继承、哪些是局部覆盖，让 Revit 仍是 Revit，只是被更好地管理。")}</p>
+          <p style={{ fontSize: 15, color: "var(--text-on-dark-mid)", marginTop: 13, lineHeight: 1.55 }}>{t("You rarely start from a blank model. StepWise adopts onto the stairs, types and projects you already have, and does not replace Revit's existing stair, run, landing or railing types. It relates those scattered objects into one stair system, defines which levels inherit the typical rule and which are exceptions, and tracks which parameters are inherited or locally overridden, so Revit stays Revit, only better managed.", "你很少从一个空模型开始。StepWise 可以接入你已有的楼梯、类型与项目，而不替代 Revit 原有的 stair / run / landing / railing type。它把这些分散的对象关联成一个楼梯系统，定义哪些楼层继承典型规则、哪些是例外，并记录哪些参数是继承、哪些是局部覆盖，让 Revit 仍是 Revit，只是被更好地管理。")}</p>
         </div>
 
         {/* PART A — the data model, four layers */}
@@ -213,10 +213,10 @@ function ChWorkspace() {
   ];
   const shown = zones.filter((z) => progress >= z.at);
   return (
-    <section ref={ref} data-screen-label="06 Workspace" style={{ height: "260vh", position: "relative", background: "transparent" }}>
+    <section ref={ref} data-screen-label="07 Workspace" style={{ height: "260vh", position: "relative", background: "transparent" }}>
       <div style={{ position: "sticky", top: 0, height: "100vh", display: "flex", alignItems: "center", overflow: "hidden" }}>
         <div className="wrap" style={{ width: "100%", position: "relative", zIndex: 1 }}>
-          <Head idx="06" eye={t("The StepWise workspace", "StepWise 工作台")} title={t("A stair, as a system you can see and edit.", "把楼梯，变成一个看得见、改得动的系统。")} copy={t("One workspace replaces the maze of type dialogs: every level in the System Browser on the left, the live stair model in the centre, and the selected change on the right, with its cause, its exact scope and its full impact.", "一个工作台取代层层类型对话框：左侧的系统浏览器列出每一层，中央是实时楼梯模型，右侧是选中的变更，包括它的成因、精确范围与完整影响。")} style={{ maxWidth: 720, marginBottom: 20 }} />
+          <Head idx="07" eye={t("The StepWise workspace", "StepWise 工作台")} title={t("A stair, as a system you can see and edit.", "把楼梯，变成一个看得见、改得动的系统。")} copy={t("One workspace replaces the maze of type dialogs: every level in the System Browser on the left, the live stair model in the centre, and the selected change on the right, with its cause, its exact scope and its full impact.", "一个工作台取代层层类型对话框：左侧的系统浏览器列出每一层，中央是实时楼梯模型，右侧是选中的变更，包括它的成因、精确范围与完整影响。")} style={{ maxWidth: 720, marginBottom: 20 }} />
           <RealUI src={UI.main} alt="StepWise workspace, East Stair System View" callouts={shown} />
           <div style={{ marginTop: 13, display: "flex", gap: 9, alignItems: "center", fontFamily: "var(--font-mono)", fontSize: 11, color: "var(--text-on-dark-lo)" }}>
             <span style={{ color: "var(--accent)" }}>{shown.length}/{zones.length}</span>
