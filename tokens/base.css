@@ -1,0 +1,96 @@
+/* ============================================================
+   Base reset + shared primitives for the case-study site.
+   (Imported by styles.css)
+   ============================================================ */
+
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; padding: 0; }
+
+html { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-sans);
+  font-size: var(--fs-base);
+  line-height: var(--lh-normal);
+  color: var(--text-on-dark-hi);
+  background: var(--bg-canvas);
+  font-weight: var(--fw-regular);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+}
+
+h1,h2,h3,h4 { font-family: var(--font-display); font-weight: var(--fw-medium); letter-spacing: var(--ls-tight); line-height: var(--lh-tight); }
+
+/* ---- Eyebrow / overline label (mono, tracked) ---- */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono-sm);
+  letter-spacing: var(--ls-widest);
+  text-transform: uppercase;
+  font-weight: var(--fw-medium);
+  color: var(--accent);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+.eyebrow--muted { color: var(--text-on-dark-lo); }
+.eyebrow .eyebrow__idx { color: var(--text-on-dark-lo); }
+
+/* ---- Layout helpers ---- */
+.wrap { width: 100%; max-width: var(--maxw); margin-inline: auto; padding-inline: var(--gutter); }
+.wrap--narrow { max-width: var(--maxw-narrow); }
+
+.section { position: relative; padding-block: var(--section-pad-y); }
+
+/* ---- Mono data tag ---- */
+.tag {
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono-xs);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: var(--r-xs);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+  line-height: 1;
+}
+.tag--ok        { color: var(--ok-500);        background: rgba(30,174,110,0.12); }
+.tag--exception { color: var(--exception-500); background: rgba(245,132,31,0.14); }
+.tag--warn      { color: var(--warn-500);      background: rgba(242,68,56,0.14); }
+.tag--typical   { color: var(--typical-400);   background: rgba(61,125,255,0.14); }
+.tag--neutral   { color: var(--text-on-dark-mid); background: rgba(255,255,255,0.06); }
+
+/* status dot */
+.dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; flex: none; }
+.dot--ok { background: var(--ok-500); }
+.dot--exception { background: var(--exception-500); }
+.dot--warn { background: var(--warn-500); }
+.dot--typical { background: var(--typical-500); }
+
+/* ---- Reveal-on-scroll base ---- */
+.reveal { opacity: 0; transform: translateY(22px); transition: opacity var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out); will-change: opacity, transform; }
+.reveal.is-in { opacity: 1; transform: none; }
+.reveal[data-delay="1"] { transition-delay: 80ms; }
+.reveal[data-delay="2"] { transition-delay: 160ms; }
+.reveal[data-delay="3"] { transition-delay: 240ms; }
+.reveal[data-delay="4"] { transition-delay: 320ms; }
+.reveal[data-delay="5"] { transition-delay: 400ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1 !important; transform: none !important; }
+}
+
+/* ---- Hairline divider ---- */
+.rule { height: 1px; background: var(--hairline-dark); border: 0; }
+
+/* ---- focus ---- */
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
+
+/* number / data figure */
+.figure { font-family: var(--font-display); font-feature-settings: "tnum" 1; }
+.mono { font-family: var(--font-mono); }

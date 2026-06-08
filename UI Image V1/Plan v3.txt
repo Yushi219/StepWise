@@ -1,0 +1,487 @@
+你说得对，这版给 Claude Code 太容易被它理解成“每章同一个 pinned section + 换卡片”，结果做出来就像模板循环。我们要把它改成 **每章有完全不同的版式和动效机制**，同时保留最开始那版的清晰结构。
+
+下面这版是给 Claude Code / Gemini 做 HTML 的 **导演式页面规格**：每章都写清楚布局、动效、素材、视觉目标，避免它复用同一种卡片模板。
+
+---
+
+# StepWise for Revit  
+**Scrollytelling Case Study Layout Spec**
+
+整体原则：  
+每一章都使用不同的空间结构。不要重复“左文字右卡片”。页面应该像一条产品电影：有开场、证据墙、问题爆炸、系统重构、操作演示、收束。
+
+---
+
+## 00 · Opening Cinematic
+**Purpose**  
+建立主题：楼梯不是单段几何，而是一套跨楼层系统。
+
+**Layout**  
+Full-screen cinematic hero。  
+文字极少，居中或左下角。
+
+**Visual**  
+全屏 3D stair model。  
+从单个 stair run 近景拉远到 20 层 stair core。
+
+**Animation**
+- Scroll 0-30%：近景踏步，浅景深。
+- Scroll 30-70%：相机后退，楼层逐渐出现。
+- Scroll 70-100%：typical floors 蓝色、equipment floors 橙色亮起。
+
+**Self-made assets**
+- 单段楼梯近景
+- 多层 stair core 模型 / AI 关键帧
+
+**Foreground**
+StepWise for Revit  
+Edit globally. Vary locally. Preview impact.
+
+---
+
+## 01 · Existing Revit Context
+**Purpose**  
+说明 Revit 已有 creation 工具，StepWise 不是重做创建，而是解决创建后的编辑维护。
+
+**Layout**  
+Horizontal ribbon scan。  
+顶部是一条超宽 Revit toolbar，页面像横向扫描 UI。
+
+**Visual**  
+你截图里的 Revit 2026 stair toolbar 横向铺开。  
+Run、Landing、Support、Multistory Stairs 被 light sweep 高亮。
+
+**Animation**
+- 工具栏从右向左缓慢横移，像扫描产品界面。
+- 高亮依次扫过 Run → Landing → Support → Multistory。
+- 最后 toolbar 变半透明，后面浮现多层 stair model。
+
+**Self-made assets**
+- Revit 2026 toolbar 截图
+- 模糊化/抽象化版本
+- 多层楼梯模型
+
+**Foreground**
+Revit already supports stair creation.  
+StepWise focuses on what happens after creation: change, exceptions, dependencies, and impact.
+
+---
+
+## 02 · Research Table / Evidence Desk
+**Purpose**  
+展示研究不是拍脑袋：case prompt、访谈、公开反馈、market scan 汇合。
+
+**Layout**  
+俯视研究桌面，不是卡片墙。  
+像桌上散着打印纸、截图、便签、插件页面。
+
+**Visual**
+- PDF 片段打印纸
+- 访谈便签
+- 论坛截图纸片
+- 插件 market scan 小票据
+- 中央是一张多层楼梯草图
+
+**Animation**
+- 不同证据从桌面边缘滑入。
+- 一支光线/细线把证据连接到中间 stair sketch。
+- 最后桌面上只留下一个高价值场景图：repeated floors + exceptions + floor height change。
+
+**Self-made assets**
+- PDF 截图片段
+- 模糊论坛卡片
+- 插件扫描小卡片
+- 中央楼梯手绘/模型图
+
+**Foreground**
+The pain is real, but contextual.  
+It becomes severe when repeated floors, local exceptions, shared types, and project changes collide.
+
+---
+
+## 03 · Anna’s Before Flow
+**Purpose**  
+把问题变成真实操作场景，而不是抽象痛点。
+
+**Layout**  
+Split-screen timeline。  
+左边是 Anna 的步骤时间线，右边是 Revit 模型/窗口状态。
+
+**Visual**
+- L12 层高变化的 building section
+- Revit dialog 影子
+- landing / railing 轻微错位
+- East Stair active，West Stair faint
+
+**Animation**
+这章不是卡片切换，而是 timeline progress：
+- Step marker 1：L12 变红
+- Step marker 2：dialog 叠加
+- Step marker 3：landing/railing 错位
+- Step marker 4：West Stair 出现疑问 glow
+- Step marker 5：时间线拉长，表示一下午
+
+**Self-made assets**
+- L12 +200mm 剖面图
+- Revit dialog 背景
+- 错位组件近景
+
+**Foreground**
+L12 just got 200mm taller.  
+Anna needs to update East Stair without breaking equipment-floor exceptions—or touching West Stair by accident.
+
+---
+
+## 04 · Root Cause Explosion
+**Purpose**  
+解释根因：隐藏层级、范围不清、例外不可管理。
+
+**Layout**  
+3D exploded object diagram。  
+中心是楼梯模型，组件围绕它展开。
+
+**Visual**
+- Stair run
+- Landing
+- Railing
+- Baluster
+- Support
+- Cut mark
+- Type/sub-type dependency lines
+
+**Animation**
+- 完整楼梯先稳定显示。
+- 滚动后组件爆炸分离。
+- 粉色线连接 shared type。
+- 红色点出现在风险依赖处。
+- 最后出现 East/West 两套 stair system 的关系线。
+
+**Self-made assets**
+- Exploded stair assembly
+- Dependency graph
+- East/West stair network
+
+**Foreground**
+The root issue is hidden structure.  
+Users cannot see hierarchy, scope, or exceptions before they commit a change.
+
+---
+
+## 05 · Design Principles as System Cleanup
+**Purpose**  
+从根因过渡到方案原则。
+
+**Layout**  
+不是文字列表，而是“混乱网络被整理”的动态系统图。
+
+**Visual**
+上一章的混乱 dependency network 继续存在。  
+四种颜色线开始分组：
+- 蓝：system
+- 橙：exception
+- 粉：shared dependency
+- 红：warning
+
+**Animation**
+- 线条从 tangled network 自动归位。
+- 四个区域形成清晰结构。
+- 最后变成 StepWise UI 的骨架。
+
+**Self-made assets**
+- 可用上一章的 dependency network
+- 清理后的 system diagram
+
+**Foreground**
+Make hierarchy visible.  
+Make scope explicit.  
+Manage exceptions.  
+Preview impact.
+
+---
+
+## 06 · StepWise Workspace Reveal
+**Purpose**  
+第一次完整展示你的核心 UI。
+
+**Layout**  
+Product UI reveal，不是卡片。  
+像软件界面从 Revit 里打开。
+
+**Visual**
+完整 StepWise hero UI：
+- 左：Stair System View
+- 中：3D stair model / section
+- 右：Rule / parameter panel
+- 底：Impact bar
+- 顶：保留 Revit ribbon 语境
+
+**Animation**
+- Revit 原界面 dim。
+- StepWise panel 从左侧滑出。
+- 中间模型进入 system highlight mode。
+- 底部 impact bar 从 0 宽度展开。
+- 右侧 panel 抽屉式出现。
+
+**Self-made assets**
+必须自己做：
+- StepWise hero UI mockup
+- Revit 背景模型
+
+**Foreground**
+StepWise is a system-level workspace for stair editing.  
+It turns a stair from scattered types into a visible, editable system.
+
+---
+
+## 07 · System View / Vertical Matrix
+**Purpose**  
+展示“看见整套楼梯”。
+
+**Layout**  
+Vertical synchronized scroll。  
+页面中间是楼层矩阵，右侧是模型剖面，两者同步。
+
+**Visual**
+- Vertical level matrix
+- 20 层 stair section
+- L12 red
+- L10/L20 orange
+- typical floors blue
+
+**Animation**
+- 页面滚动时，matrix 行像电梯一样上下轻微移动。
+- hover/scroll 到某行，对应模型楼层发光。
+- Mixed values 用不同纹理/虚线表示。
+- L12 warning 向右连接到模型红点。
+
+**Self-made assets**
+- System View UI
+- 20 层 stair section
+
+**Foreground**
+One stair. Many levels. One view.  
+Anna sees typical floors, exceptions, warnings, and mixed values before editing.
+
+---
+
+## 08 · Scope Control / Highlight Field
+**Purpose**  
+展示“修改范围明确”。
+
+**Layout**  
+Radial or spotlight interaction。  
+不是普通弹窗。模型成为主角，scope selector 环绕模型。
+
+**Visual**
+- 中间 stair model
+- 周围几个 scope option 按钮形状
+- 不同范围以光场显示
+
+**Animation**
+- 选择 This level：L12 单层 spotlight
+- 选择 All typical floors：蓝色光带扫过所有 typical floors
+- 选择 Entire system：整套楼梯蓝色轮廓
+- 选择 Shared type：其他楼梯系统粉色虚线出现
+
+**Self-made assets**
+- Scope selector mockup
+- 多楼梯系统模型
+
+**Foreground**
+Every change needs a boundary.  
+StepWise previews the affected scope before the model changes.
+
+---
+
+## 09 · Exception Manager / Branching Diagram
+**Purpose**  
+展示“局部例外不再靠 duplicate type”。
+
+**Layout**  
+Branching system diagram。  
+像一条蓝色规则主干，橙色例外分支。
+
+**Visual**
+- 蓝色 typical spine
+- L10/L20 橙色 exception branches
+- 右侧 inherited vs overridden 对比面板
+
+**Animation**
+- 蓝色 rule 贯穿所有 typical levels。
+- L10/L20 从主干分出橙色 branch。
+- 点击 branch，右侧对比面板像抽屉打开。
+- revert 时 branch 收回主干。
+
+**Self-made assets**
+- Exception manager UI
+- Inherited / overridden panel
+
+**Foreground**
+Exceptions should be managed, not duplicated.  
+Local overrides stay connected to the stair system.
+
+---
+
+## 10 · Impact Preview / Ghost Model
+**Purpose**  
+展示最重要的 trust mechanism。
+
+**Layout**  
+Full-screen model comparison。  
+文字靠边，模型占主屏。
+
+**Visual**
+- old geometry grey
+- new geometry blue transparent
+- exceptions orange
+- warnings red
+- impact summary panel
+
+**Animation**
+- 旧模型灰色定格。
+- 新模型蓝色 ghost 叠上来。
+- 受影响组件逐个 pulse。
+- 红色 warning zoom-in。
+- 点击 review 后回到全局。
+
+**Self-made assets**
+- Impact Preview UI
+- Before/after ghost keyframes
+
+**Foreground**
+Before Revit changes the BIM model, it explains the impact.  
+Anna can review geometry, components, exceptions, documentation, and warnings before Apply.
+
+---
+
+## 11 · Building Stair Network / Side-by-Side Systems
+**Purpose**  
+回答“一栋楼多个楼梯系统”的问题。
+
+**Layout**  
+Two-system comparison stage。  
+左右分别是 East Stair / West Stair，中间是同层关系线。
+
+**Visual**
+- East stair active
+- West stair passive
+- L12 relation line
+- review hint glow
+
+**Animation**
+- East Stair L12 更新。
+- 一条细线扫向 West Stair L12。
+- West 同层出现柔和橙色 glow。
+- 用户选择 Review 时，两个系统并排对齐比较。
+- 不自动修改 West。
+
+**Self-made assets**
+- East/West stair system diagram
+- Review hint UI
+
+**Foreground**
+A building can have many stair systems.  
+StepWise edits one system, but surfaces related systems that may need review.
+
+---
+
+## 12 · Supporting Detail Lab
+**Purpose**  
+把 Visual Explainer / Component Map / Smart Reconcile / AI Assist 放进一个“实验台”章节，但每个小点有不同 micro animation。
+
+**Layout**  
+Interactive lab bench。  
+四个小 demo 模块不做成一样的卡片，可用不同形态：
+
+1. 左上：参数局部剖面
+2. 右上：组件关系网
+3. 左下：修复扫描线
+4. 右下：AI summary glow
+
+**Visual + Animation**
+- Visual Parameter Explainer：hover 参数，riser/tread/landing 发光。
+- Connected Component Map：点击 landing，related runs 发光。
+- Smart Reconcile：错位 landing/railing 被蓝色扫描线修复。
+- AI Assist：蓝橙红状态点汇聚成 assistant glow。
+
+**Self-made assets**
+- 四个小 demo keyframes
+
+**Foreground**
+Small interaction details make the system feel intuitive.  
+Parameters explain themselves; connected parts reconcile before they break.
+
+---
+
+## 13 · MVP and Validation / Test Rig
+**Purpose**  
+展示产品判断和验证方法。
+
+**Layout**  
+Test rig / simulation dashboard。  
+像一个可用性测试实验台，而不是 roadmap 卡片。
+
+**Visual**
+- 20 层测试楼梯
+- L12 change
+- L10/L20 exceptions
+- East/West review
+- 指标仪表盘
+
+**Animation**
+- 测试任务依次点亮。
+- 指标从灰色 baseline 移动到蓝色 target。
+- 不出现假数字，只出现箭头和状态变化。
+
+**Self-made assets**
+- Usability test scenario diagram
+- Abstract metrics dashboard
+
+**Foreground**
+Start with editing confidence.  
+Success means Anna can predict what will change before she clicks Apply.
+
+---
+
+## 14 · Closing / Resolve the Network
+**Purpose**  
+收束全篇。
+
+**Layout**  
+Full-screen calm ending。
+
+**Visual**
+复杂的参数窗口、依赖线、warning、多个系统逐渐淡出。  
+留下干净的 multi-level stair system。
+
+**Animation**
+- 参数窗口消失。
+- tangled lines 收束。
+- blue typical floors 稳定。
+- orange exceptions 保留。
+- camera 慢慢旋转定格。
+
+**Self-made assets**
+- Clean final stair system keyframe
+
+**Foreground**
+Revit users can handle complexity.  
+They just need to see it clearly.
+
+Manage stair intent, not stair accidents.
+
+---
+
+# 给 Claude Code 的关键限制
+
+你可以直接把这段加到 prompt 里：
+
+1. Do not use the same card layout for every section.  
+2. Each section must have a distinct visual mechanism: cinematic hero, toolbar scan, evidence desk, timeline, exploded model, network cleanup, product UI reveal, vertical matrix, spotlight scope, branching diagram, ghost preview, side-by-side system comparison, interaction lab, test rig, final resolve.  
+3. Background visuals should carry the story. Foreground text should not repeat the visual.  
+4. Avoid generic SaaS cards. This is a BIM product case study, not a marketing landing page.  
+5. Use Revit-like UI density and professional BIM visual language.  
+6. No fake readable text in AI-generated background images; all real text must be HTML.  
+7. Main UI mockups should look like tools a Revit user would trust: compact, structured, not playful.
+
+这样它就不会再给你生成“每章卡片换一换”的东西了。

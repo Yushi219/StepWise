@@ -1,0 +1,49 @@
+/* ============================================================
+   Stair System Manager — Spacing, Radius, Shadow, Motion
+   ============================================================ */
+
+:root {
+  /* Spacing scale (4px base) */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 24px;
+  --sp-6: 32px;
+  --sp-7: 48px;
+  --sp-8: 64px;
+  --sp-9: 96px;
+  --sp-10: 128px;
+  --sp-11: 180px;
+
+  /* Section rhythm */
+  --section-pad-y: clamp(80px, 10vh, 160px);
+  --gutter: clamp(26px, 5.5vw, 100px); /* @kind spacing */
+  --maxw: 1240px;
+  --maxw-narrow: 820px;
+
+  /* Radius — restrained, precise (this is a technical tool) */
+  --r-xs: 3px;
+  --r-sm: 5px;
+  --r-md: 8px;
+  --r-lg: 12px;
+  --r-xl: 18px;
+  --r-pill: 999px;
+
+  /* Shadows — light panels float subtly above the dark canvas */
+  --shadow-sm: 0 1px 2px rgba(8,10,14,0.08), 0 1px 1px rgba(8,10,14,0.04);
+  --shadow-md: 0 4px 12px rgba(8,10,14,0.10), 0 1px 3px rgba(8,10,14,0.06);
+  --shadow-lg: 0 18px 48px rgba(8,10,14,0.18), 0 4px 12px rgba(8,10,14,0.10);
+  --shadow-panel: 0 24px 70px rgba(8,10,14,0.40), 0 2px 8px rgba(8,10,14,0.30);
+  --shadow-float-dark: 0 30px 80px rgba(0,0,0,0.55);
+  --glow-accent: 0 0 0 1px rgba(61,125,255,0.40), 0 8px 30px rgba(61,125,255,0.30);
+
+  /* Motion — calm, precise, no bounce. Predictability is the brand. */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1); /* @kind other */
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1); /* @kind other */
+  --ease-emph: cubic-bezier(0.16, 1, 0.3, 1); /* @kind other */
+  --dur-fast: 160ms; /* @kind other */
+  --dur: 300ms; /* @kind other */
+  --dur-slow: 600ms; /* @kind other */
+  --dur-slower: 900ms; /* @kind other */
+}

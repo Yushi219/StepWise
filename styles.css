@@ -1,0 +1,14 @@
+/* ============================================================
+   Revit StairSense — Design System entry point.
+   Consumers link THIS file. Imports only.
+   ============================================================ */
+
+/* Brand fonts — Space Grotesk (display), Hanken Grotesk (sans), JetBrains Mono (data).
+   Imported here so the @font-face rules live in the design-system CSS closure.
+   Until self-hosted font files are uploaded, these load from Google Fonts. */
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap");
+
+@import "tokens/colors.css";
+@import "tokens/typography.css";
+@import "tokens/layout.css";
+@import "tokens/base.css";

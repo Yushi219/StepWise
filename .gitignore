@@ -1,0 +1,12 @@
+# OS / editor junk
+.DS_Store
+Thumbs.db
+nul
+
+# temp / tooling
+_chk.py
+*.tmp
+
+# Keep the Autodesk interview brief out of the public repo
+*.pdf
+uploads/

@@ -1,0 +1,102 @@
+/* ============================================================
+   Stair System Manager — Color Tokens
+   A professional BIM-tool palette: dark "modeling canvas"
+   surfaces + light operational panels, with a functional
+   status palette (typical / exception / warning / ok).
+   ============================================================ */
+
+:root {
+  /* --- Ink / dark canvas scale (the 3D modeling environment) --- */
+  --ink-950: #080A0E;
+  --ink-900: #0C0F14;
+  --ink-850: #101520;
+  --ink-800: #141A24;
+  --ink-700: #1B2230;
+  --ink-600: #252E3D;
+  --ink-500: #323D4F;
+  --ink-400: #475467;
+
+  /* --- Paper / light panel scale (operational UI chrome) --- */
+  --paper-0:  #FFFFFF;
+  --paper-50: #F7F8FA;
+  --paper-100:#F0F2F5;
+  --paper-200:#E5E8EE;
+  --paper-300:#D6DBE3;
+  --paper-400:#B8C0CC;
+
+  /* --- Hairlines / borders --- */
+  --line-on-dark:   rgba(255,255,255,0.10);
+  --line-on-dark-2: rgba(255,255,255,0.18);
+  --line-on-light:  #E2E6EC;
+  --line-on-light-2:#D0D6DF;
+
+  /* --- Text --- */
+  --text-on-dark-hi:  #F3F5F8;
+  --text-on-dark-mid: #A9B2C0;
+  --text-on-dark-lo:  #6B7686;
+  --text-strong: #11151C;
+  --text-body:   #39434F;
+  --text-muted:  #6A7585;
+  --text-faint:  #97A1AF;
+
+  /* --- Functional / status palette (semantic) --- */
+  /* Typical = the system baseline */
+  --typical-700: #1B4FC4;
+  --typical-600: #2563E6;
+  --typical-500: #3D7DFF;   /* primary accent */
+  --typical-400: #6FA0FF;
+  --typical-300: #A9C6FF;
+  --typical-tint:#EAF1FF;
+
+  /* Exception = intentional local difference */
+  --exception-600:#D9690F;
+  --exception-500:#F5841F;
+  --exception-400:#FF9F4D;
+  --exception-tint:#FFF1E3;
+
+  /* Warning = code / risk */
+  --warn-600:#D62D22;
+  --warn-500:#F24438;
+  --warn-400:#FF6F66;
+  --warn-tint:#FDEAE8;
+
+  /* OK = healthy / consistent */
+  --ok-600:#10895A;
+  --ok-500:#1EAE6E;
+  --ok-400:#43C98C;
+  --ok-tint:#E6F7EF;
+
+  /* External / unintended dependency (pink dashed in diagrams) */
+  --external-500:#F76FB0;
+  --external-400:#FF96C6;
+
+  /* Ghost preview (proposed new geometry) */
+  --ghost: rgba(61,125,255,0.42);
+  --ghost-line: rgba(61,125,255,0.85);
+
+  /* ------------------------------------------------------------
+     Semantic aliases — reference these in components/sections.
+     ------------------------------------------------------------ */
+  --bg-canvas:        var(--ink-900);
+  --bg-canvas-deep:   var(--ink-950);
+  --bg-canvas-raised: var(--ink-800);
+  --surface-panel:    var(--paper-0);
+  --surface-sunken:   var(--paper-50);
+  --surface-inset:    var(--paper-100);
+
+  --accent:           var(--typical-500);
+  --accent-strong:    var(--typical-600);
+  --accent-tint:      var(--typical-tint);
+
+  --status-ok:        var(--ok-500);
+  --status-exception: var(--exception-500);
+  --status-warn:      var(--warn-500);
+
+  --hairline-dark:  var(--line-on-dark);
+  --hairline-light: var(--line-on-light);
+
+  /* Selection */
+  --selection-bg: rgba(61,125,255,0.28);
+}
+
+::selection { background: var(--selection-bg); }
