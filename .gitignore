@@ -7,6 +7,21 @@ nul
 _chk.py
 *.tmp
 
+# Source scratch & dev-only — the repo ships only the running site
+/*.mp4
+/Main image.png
+/UI Image V1/
+/UI ImageV2/
+/guidelines/
+/verify/
+/SKILL.md
+/_adherence.oxlintrc.json
+/_ds_bundle.js
+/_ds_manifest.json
+assets/ui/exception-manager.png
+assets/ui/impact-preview.png
+assets/ui/system-view.png
+
 # Keep the Autodesk interview brief out of the public repo
 *.pdf
 uploads/
