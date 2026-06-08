@@ -45,7 +45,90 @@ function RealUI({ src, alt, callouts, dim, missingLabel }) {
   );
 }
 
-/* 06 · Workspace reveal — the real main UI; callouts reveal region-by-region on scroll.
+/* 06 · How it fits Revit — three-part architecture: native objects (source of record)
+   → StepWise system layer (references, never replaces) → native touchpoints where the
+   system surfaces inside Properties / Edit Type / parameter rows. CSS-drawn. */
+function ChArchitecture() {
+  const [ref, inView] = useInView(0.12);
+  const rev = (d) => ({ opacity: inView ? 1 : 0, transform: inView ? "none" : "translateY(18px)", transition: "opacity .55s var(--ease-out), transform .55s var(--ease-out)", transitionDelay: d + "s" });
+  const head = { fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--text-on-dark-hi)", fontWeight: 600 };
+  const sub = { fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: "0.04em", color: "var(--text-on-dark-lo)", marginTop: 3 };
+  const chip = { fontFamily: "var(--font-mono)", fontSize: 11.5, color: "var(--text-on-dark-mid)", background: "rgba(255,255,255,0.04)", border: "1px solid var(--line-on-dark)", borderRadius: "var(--r-sm)", padding: "7px 10px" };
+  const col = { borderRadius: "var(--r-lg)", border: "1px solid var(--line-on-dark)", background: "rgba(8,10,14,0.5)", padding: "14px 13px" };
+  const mock = { borderRadius: 8, border: "1px solid var(--line-on-dark-2)", background: "#0b0e13", overflow: "hidden" };
+  const bar = { fontFamily: "var(--font-mono)", fontSize: 9.5, letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--text-on-dark-lo)", padding: "6px 10px", borderBottom: "1px solid var(--line-on-dark)", background: "rgba(255,255,255,0.03)" };
+  const row = { display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, padding: "4px 0", fontSize: 11, color: "var(--text-on-dark-mid)" };
+  const natives = [["Stair Type", "楼梯类型"], ["Run Type", "梯段类型"], ["Landing Type", "平台类型"], ["Railing Type", "栏杆类型"], ["Baluster", "栏杆柱"], ["Support", "支撑"], ["Views / Tags", "视图 / 标签"]];
+  const sysL = [["Stair System", "楼梯系统"], ["Typical Rule", "典型规则"], ["Managed Exceptions", "受管理的例外"], ["Scope", "范围"], ["Impact Preview", "影响预览"], ["Audit Trail", "审计轨迹"]];
+  const arrow = (label, d) => (
+    <div className="arch-arrow" style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 7, ...rev(d) }}>
+      <Icon name="arrowR" size={22} color="var(--text-on-dark-lo)" />
+      <span style={{ fontFamily: "var(--font-mono)", fontSize: 9.5, color: "var(--text-on-dark-lo)", textAlign: "center", lineHeight: 1.35, whiteSpace: "pre-line" }}>{label}</span>
+    </div>);
+  return (
+    <section ref={ref} data-screen-label="08 How it fits Revit" className="slide" style={{ background: "transparent" }}>
+      <div className="wrap" style={{ width: "100%" }}>
+        <div style={{ maxWidth: 760, marginBottom: 24, ...rev(0) }}>
+          <Eyebrow idx="08">{t("How it fits Revit", "与原生模型的融合")}</Eyebrow>
+          <h2 style={{ fontSize: "clamp(1.7rem,1.2rem+1.6vw,2.6rem)", fontWeight: 500, color: "#fff", letterSpacing: "-0.025em", margin: "14px 0 0", lineHeight: 1.12 }}>{t("StepWise adds a system layer above native Revit types.", "StepWise 在 Revit 原生类型之上增加一层系统管理。")}</h2>
+          <p style={{ fontSize: 15, color: "var(--text-on-dark-mid)", marginTop: 13, lineHeight: 1.55 }}>{t("Native types stay the source of record. StepWise groups them into stair systems, stores local variation as managed exceptions, and surfaces system awareness inside the places Revit users already work — Properties, Edit Type and parameter rows.", "原生类型仍然是基础数据。StepWise 把它们组织成楼梯系统，把局部变化保存为受管理的例外，并把系统感知带到用户原本就在使用的位置——Properties、Edit Type 和参数行。")}</p>
+        </div>
+        <div className="arch-grid" style={{ display: "grid", gridTemplateColumns: "minmax(150px,0.82fr) auto minmax(190px,1fr) auto minmax(220px,1.15fr)", gap: "clamp(10px,1.4vw,22px)", alignItems: "stretch" }}>
+          <div style={{ ...col, ...rev(0.05) }}>
+            <div style={head}>{t("Native Revit objects", "原生 Revit 对象")}</div>
+            <div style={sub}>{t("source of record", "基础数据")}</div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 6, marginTop: 11 }}>
+              {natives.map((n, i) => <div key={i} style={chip}>{t(n[0], n[1])}</div>)}
+            </div>
+          </div>
+          {arrow(t("reference,\nnot replace", "引用，\n不替换"), 0.16)}
+          <div style={{ ...rev(0.1), borderRadius: "var(--r-lg)", border: "1px solid var(--accent)", background: "rgba(61,125,255,0.10)", padding: "14px 13px" }}>
+            <div style={{ ...head, color: "var(--typical-300)" }}>{t("StepWise system layer", "StepWise 系统层")}</div>
+            <div style={sub}>{t("adds system awareness", "增加系统感知")}</div>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6, marginTop: 11 }}>
+              {sysL.map((n, i) => <div key={i} style={{ ...chip, background: "rgba(61,125,255,0.14)", borderColor: "var(--typical-400)", color: "#fff", gridColumn: i === 2 ? "1 / -1" : "auto" }}>{t(n[0], n[1])}</div>)}
+            </div>
+          </div>
+          {arrow(t("surface\nawareness", "浮现\n系统感知"), 0.28)}
+          <div style={{ ...rev(0.18) }}>
+            <div style={head}>{t("Native touchpoints", "原生入口")}</div>
+            <div style={sub}>{t("where users meet StepWise", "用户遇见它的地方")}</div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 8, marginTop: 11 }}>
+              <div style={mock}>
+                <div style={bar}>Properties</div>
+                <div style={{ padding: "7px 10px" }}>
+                  <div style={row}><span style={{ color: "var(--text-on-dark-lo)" }}>System</span><span style={{ color: "#fff", fontFamily: "var(--font-mono)" }}>East Stair</span></div>
+                  <div style={row}><span style={{ color: "var(--text-on-dark-lo)" }}>Role</span><span style={{ color: "var(--ok-400)", fontFamily: "var(--font-mono)" }}>Typical</span></div>
+                </div>
+              </div>
+              <div style={{ ...mock, borderColor: "var(--accent)" }}>
+                <div style={{ ...bar, color: "var(--accent)" }}>Edit Type · impact</div>
+                <div style={{ padding: "8px 10px" }}>
+                  <div style={{ fontSize: 11.5, color: "var(--text-on-dark-hi)", lineHeight: 1.4 }}>{t("This type affects 17 levels.", "该类型影响 17 个楼层。")}</div>
+                  <div style={{ display: "flex", gap: 6, marginTop: 8, flexWrap: "wrap" }}>
+                    <span style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: "var(--text-on-dark-mid)", border: "1px solid var(--line-on-dark-2)", borderRadius: "var(--r-sm)", padding: "4px 8px" }}>{t("Preview impact", "预览影响")}</span>
+                    <span style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: "#fff", background: "var(--accent)", borderRadius: "var(--r-sm)", padding: "4px 8px" }}>{t("Create exception", "创建例外")}</span>
+                  </div>
+                </div>
+              </div>
+              <div style={mock}>
+                <div style={bar}>Type Parameters</div>
+                <div style={{ padding: "5px 10px 7px" }}>
+                  <div style={row}><span style={{ display: "flex", alignItems: "center", gap: 6 }}><Icon name="lock" size={12} color="var(--text-on-dark-lo)" />Landing Type</span><span style={{ fontFamily: "var(--font-mono)", fontSize: 9.5, color: "var(--text-on-dark-lo)" }}>{t("inherited", "继承")}</span></div>
+                  <div style={row}><span style={{ display: "flex", alignItems: "center", gap: 6 }}><span style={{ width: 7, height: 7, borderRadius: "50%", background: "var(--exception-500)" }} />Riser Count</span><span style={{ fontFamily: "var(--font-mono)", fontSize: 9.5, color: "var(--exception-400)" }}>{t("override", "覆盖")}</span></div>
+                  <div style={row}><span style={{ display: "flex", alignItems: "center", gap: 6 }}><Icon name="warn" size={12} color="var(--warn-400)" />Railing</span><span style={{ fontFamily: "var(--font-mono)", fontSize: 9.5, color: "var(--warn-400)" }}>{t("review", "复查")}</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p style={{ ...rev(0.42), fontFamily: "var(--font-display)", fontSize: "clamp(1.05rem,0.95rem+0.5vw,1.4rem)", fontWeight: 500, color: "var(--typical-300)", lineHeight: 1.35, marginTop: 24, maxWidth: 860, letterSpacing: "-0.01em" }}>{t("Users keep their Revit workflow. StepWise adds system awareness where mistakes happen.", "用户保留原有的 Revit 工作流；StepWise 只在最容易出错的地方，补上系统感知。")}</p>
+      </div>
+    </section>);
+
+}
+
+/* 07 · Workspace reveal — the real main UI; callouts reveal region-by-region on scroll.
    Reading order = the mental model: levels (left) → model (centre) → issue + scope
    (right) → impact (bottom). Dwell-then-leave: each ring holds while you read. */
 function ChWorkspace() {
@@ -198,14 +281,14 @@ function ChNetwork() {
   ];
   const shownCo = co.filter((c) => progress >= c.at);
   return (
-    <section ref={ref} data-screen-label="08 The AI boundary" style={{ height: "300vh", position: "relative", background: "transparent" }}>
+    <section ref={ref} data-screen-label="09 The AI boundary" style={{ height: "300vh", position: "relative", background: "transparent" }}>
       <div style={{ position: "sticky", top: 0, height: "100vh", display: "flex", alignItems: "center", overflow: "hidden" }}>
         <div className="wrap flow-grid" style={{ width: "100%", display: "grid", gridTemplateColumns: "1.12fr 0.88fr", gap: "clamp(24px,3.5vw,56px)", alignItems: "center" }}>
           {/* image hero — left */}
           <RealUI src={UI.ai} alt="Autodesk Assistant — read-only AI layer" callouts={shownCo} />
           {/* narrative + boundary ledger — right */}
           <div>
-            <Eyebrow idx="08">{t("The AI boundary", "AI 的边界")}</Eyebrow>
+            <Eyebrow idx="09">{t("The AI boundary", "AI 的边界")}</Eyebrow>
             <h2 style={{ fontSize: "clamp(1.6rem,1.2rem+1.5vw,2.45rem)", fontWeight: 500, color: "#fff", letterSpacing: "-0.025em", lineHeight: 1.1, margin: "14px 0 0" }}>{t("AI prepares the decision. The designer makes it.", "AI 准备决策。设计师做出决策。")}</h2>
             <p style={{ fontSize: 15.5, color: "var(--text-on-dark-mid)", marginTop: 13, lineHeight: 1.55, maxWidth: 420 }}>{t("A read-only assistant explains the impact, answers questions and drafts a report — but every model change still routes through Preview Impact and your confirmation.", "一个只读助手解释影响、回答提问、起草报告——但任何模型改动，仍要经过“预览影响”与你的确认。")}</p>
             {/* boundary ledger — read-only half, then commit half (lights up on scroll) */}
@@ -222,7 +305,7 @@ function ChNetwork() {
               {humanMay.map((h, i) => <div key={i} style={{ display: "flex", alignItems: "center", gap: 10, fontSize: 14, fontWeight: 500, color: handoff > 0.4 ? "var(--text-on-dark-hi)" : "var(--text-on-dark-lo)", padding: "5px 0", transition: "color .4s" }}><span style={{ width: 6, height: 6, borderRadius: "50%", background: handoff > 0.4 ? "var(--ok-500)" : "var(--text-on-dark-lo)", flex: "none", transition: "background .4s" }} />{t(h[0], h[1])}</div>)}
             </div>
             {/* verbatim in-product disclaimer */}
-            <div style={{ marginTop: 20, paddingLeft: 13, borderLeft: "2px solid var(--line-on-dark-2)", fontFamily: "var(--font-mono)", fontSize: 11.5, color: "var(--text-on-dark-lo)", lineHeight: 1.55, maxWidth: 400 }}>{t("“Assistant can explain and summarize. Model changes require Preview Impact and user confirmation.”", "“助手可以解释与总结。模型改动需经过‘预览影响’与用户确认。”")}</div>
+            <div style={{ marginTop: 20, paddingLeft: 13, borderLeft: "2px solid var(--line-on-dark-2)", fontFamily: "var(--font-mono)", fontSize: 11.5, color: "var(--text-on-dark-lo)", lineHeight: 1.55, maxWidth: 400 }}>{t("Assistant can explain and summarize. Model changes require Preview Impact and user confirmation.", "助手可以解释与总结；模型改动需经过预览影响与用户确认。")}</div>
           </div>
         </div>
       </div>
@@ -247,10 +330,10 @@ function ChLab() {
   ];
   const a = details[active];
   return (
-    <section data-screen-label="09 Trust details" className="slide" ref={ref} style={{ background: "transparent" }}>
+    <section data-screen-label="10 Trust details" className="slide" ref={ref} style={{ background: "transparent" }}>
       <div className="wrap" style={{ width: "100%" }}>
         <div style={{ maxWidth: 740, marginBottom: 22, opacity: inView ? 1 : 0, transform: inView ? "none" : "translateY(18px)", transition: "opacity .55s var(--ease-out), transform .55s var(--ease-out)" }}>
-          <Eyebrow idx="09">{t("Trust details", "信任细节")}</Eyebrow>
+          <Eyebrow idx="10">{t("Trust details", "信任细节")}</Eyebrow>
           <h2 style={{ fontSize: "clamp(1.7rem,1.2rem+1.6vw,2.6rem)", fontWeight: 500, color: "#fff", letterSpacing: "-0.025em", margin: "14px 0 0", lineHeight: 1.12 }}>{t("Small details make the system usable in real Revit projects.", "小细节决定系统能不能进入真实 Revit 项目。")}</h2>
           <p style={{ fontSize: 15.5, color: "var(--text-on-dark-mid)", marginTop: 13, lineHeight: 1.55 }}>{t("StepWise is not only a new workspace. It must fit existing Revit models, existing stair types and existing team workflows — understandable while editing, safe across related systems, adoptable in active projects, and traceable over time.", "StepWise 不只是一个新的工作台。它必须能进入已有的 Revit 模型、已有的楼梯类型与团队流程——编辑时可理解，关联系统间可控，进行中的项目可采用，并且能被长期追踪。")}</p>
         </div>
@@ -306,9 +389,9 @@ function ChMVP() {
   const out = [["Redo the creation toolbar","重做创建工具栏"],["Full code-compliance engine","完整合规引擎"],["AI auto-generate stairs","AI 自动生成楼梯"],["Replace Revit's type system","替换 Revit 类型系统"],["Auto-sync all stair systems","自动同步所有楼梯"]];
   const loop = [["Detect","侦测"],["Scope","范围"],["Exceptions","例外"],["Preview","预览"],["Apply","应用"]];
   return (
-    <section data-screen-label="10 MVP scope" className="slide" ref={ref} style={{ background: "transparent" }}>
+    <section data-screen-label="11 MVP scope" className="slide" ref={ref} style={{ background: "transparent" }}>
       <div className="wrap" style={{ width: "100%" }}>
-        <Head idx="10" eye={t("MVP scope", "MVP 取舍")} title={t("Solve maintenance first. Keep Revit's precision.", "先解决维护。保留 Revit 的精确。")} style={{ maxWidth: 680, marginBottom: 28 }} />
+        <Head idx="11" eye={t("MVP scope", "MVP 取舍")} title={t("Solve maintenance first. Keep Revit's precision.", "先解决维护。保留 Revit 的精确。")} style={{ maxWidth: 680, marginBottom: 28 }} />
         {/* core loop */}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10, flexWrap: "wrap", marginBottom: 28 }}>
           {loop.map((l, i) => (
@@ -341,10 +424,10 @@ function ChMetrics() {
   const after = [["Detect","侦测"],["Scope","范围"],["Exceptions","例外"],["Preview","预览"],["Apply","应用"]];
   const metrics = [["Update time","更新耗时","↓","½ day → minutes","半天 → 几分钟"],["Duplicate types","重复类型","↓","fewer, traceable","更少、可追踪"],["Missed updates","漏改","↓","landing / railing","平台 / 栏杆"],["Confidence before Apply","应用前的信心","↑","predictable","可预测"]];
   return (
-    <section ref={ref} data-screen-label="11 Success metrics" style={{ height: "230vh", position: "relative", background: "transparent" }}>
+    <section ref={ref} data-screen-label="12 Success metrics" style={{ height: "230vh", position: "relative", background: "transparent" }}>
       <div style={{ position: "sticky", top: 0, height: "100vh", display: "flex", alignItems: "center", overflow: "hidden" }}>
         <div className="wrap" style={{ width: "100%" }}>
-          <Head idx="11" eye={t("Success metrics", "成功指标")} title={t("From an afternoon to a short, legible flow.", "从一个下午，到一条简短、可读的流程。")} style={{ maxWidth: 680, marginBottom: 26 }} />
+          <Head idx="12" eye={t("Success metrics", "成功指标")} title={t("From an afternoon to a short, legible flow.", "从一个下午，到一条简短、可读的流程。")} style={{ maxWidth: 680, marginBottom: 26 }} />
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 18 }} className="ch12-grid">
             <div style={{ borderRadius: "var(--r-lg)", border: "1px solid var(--line-on-dark)", background: "#070a0f", padding: 18, opacity: 0.6 }}>
               <div style={{ fontFamily: "var(--font-mono)", fontSize: 12, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--warn-400)", marginBottom: 12 }}>{t("Before", "之前")}</div>
@@ -376,12 +459,12 @@ function ChMetrics() {
 /* 12 · Closing */
 function ChClosing() {
   return (
-    <section data-screen-label="12 Closing" className="slide" style={{ flexDirection: "column", justifyContent: "space-between", paddingBottom: 34, overflow: "hidden", background: "transparent" }}>
+    <section data-screen-label="13 Closing" className="slide" style={{ flexDirection: "column", justifyContent: "space-between", paddingBottom: 34, overflow: "hidden", background: "transparent" }}>
       <div className="ph ph-bg" aria-hidden="true" style={{ background: "transparent" }}><div className="ph__inner">
         <Placeholder kind="model" label={t("Complexity resolves to a clean stair system", "复杂收束为干净的楼梯系统")} sub={t("Parameter windows fade · lines contract · warnings clear · camera settles", "参数窗口淡出 · 连线收束 · 警告消失 · 镜头定格")} style={{ border: 0, background: "transparent", padding: 0 }} />
       </div></div>
       <div className="wrap" style={{ position: "relative", zIndex: 2, marginTop: "auto" }}>
-        <div className="reveal"><Eyebrow>{t("Closing · 12", "结语 · 12")}</Eyebrow></div>
+        <div className="reveal"><Eyebrow>{t("Closing · 13", "结语 · 13")}</Eyebrow></div>
         <h2 className="reveal" data-delay="1" style={{ fontSize: "clamp(2rem,1.2rem+3.2vw,3.7rem)", fontWeight: 500, letterSpacing: "-0.03em", lineHeight: 1.08, marginTop: 20, color: "#fff", textWrap: "balance", maxWidth: 1000 }}>{t("StepWise puts stair intent back in the designer's hands.", "StepWise 把楼梯的设计意图，交还到设计师手中。")}</h2>
         <p className="reveal" data-delay="2" style={{ fontSize: "clamp(1.05rem,0.9rem+0.5vw,1.35rem)", color: "var(--text-on-dark-mid)", lineHeight: 1.5, marginTop: 16 }}>{t("From scattered types to a guided stair system, every change becomes visible, scoped, and ready for the next step.", "从零散的类型，到一套有引导的楼梯系统——每一次改动都变得可见、可界定，并为下一步做好准备。")}</p>
         <div className="reveal" data-delay="2" style={{ borderTop: "1px solid rgba(255,255,255,0.14)", marginTop: 24, paddingTop: 20, display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
@@ -396,4 +479,4 @@ function ChClosing() {
   );
 }
 
-Object.assign(window, { ChWorkspace, ChFlow, ChNetwork, ChLab, ChMVP, ChMetrics, ChClosing });
+Object.assign(window, { ChArchitecture, ChWorkspace, ChFlow, ChNetwork, ChLab, ChMVP, ChMetrics, ChClosing });

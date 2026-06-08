@@ -19,15 +19,15 @@ const { useState: useA, useEffect: useAE, useRef: useARef } = React;
    The scroll→time map is piecewise-linear, anchored to those two LIVE positions,
    so the contract holds no matter how the section heights change. */
 function VideoBackdrop() {
-  const v0 = useARef(null),v1 = useARef(null),v2 = useARef(null),v3 = useARef(null),v4 = useARef(null),v5 = useARef(null),v6 = useARef(null),v7 = useARef(null);
+  const v0 = useARef(null),v1 = useARef(null),v2 = useARef(null),v3 = useARef(null),v4 = useARef(null),v5 = useARef(null);
   const layer = useARef(null);
   const lastIdx = useARef(-1);
   useAE(() => {
-    const vids = [v0.current, v1.current, v2.current, v3.current, v4.current, v5.current, v6.current, v7.current];
+    const vids = [v0.current, v1.current, v2.current, v3.current, v4.current, v5.current];
     // Fetch each clip fully into memory as a Blob → makes it seekable so scroll can
     // scrub currentTime frame-by-frame (the static server has no byte-range support).
     const urls = [];
-    ["assets/video/1.mp4", "assets/video/2.mp4", "assets/video/3.mp4", "assets/video/4.mp4", "assets/video/5.mp4", "assets/video/6.mp4", "assets/video/7.mp4", "assets/video/8.mp4"].forEach((src, i) => {
+    ["assets/video/1.mp4", "assets/video/2.mp4", "assets/video/3.mp4", "assets/video/4.mp4", "assets/video/5.mp4", "assets/video/6.mp4"].forEach((src, i) => {
       const v = vids[i];if (!v) return;v.muted = true;v.pause();
       fetch(src).then((r) => r.blob()).then((b) => {const u = URL.createObjectURL(b);urls[i] = u;v.src = u;v.load();}).catch(() => {});
     });
@@ -35,7 +35,7 @@ function VideoBackdrop() {
     setActive(0);
 
     const ANCHOR_CLIP_T = 6.0;        // clip 3 must sit here when #ch05 centres
-    const smoothT = [0, 0, 0, 0, 0, 0, 0, 0];  // lerped currentTime per clip
+    const smoothT = [0, 0, 0, 0, 0, 0];  // lerped currentTime per clip
     let rafId = 0;
     const loop = () => {
       const hero = document.getElementById("hero");
@@ -44,10 +44,10 @@ function VideoBackdrop() {
       if (hero && ch05 && durs.every((d) => d > 0)) {
         const vh = window.innerHeight;
         const sy = window.pageYOffset || document.documentElement.scrollTop || 0;
-        // continuous-timeline offsets (8 clips)
-        const cum = [0, durs[0], durs[0] + durs[1], durs[0] + durs[1] + durs[2], durs[0] + durs[1] + durs[2] + durs[3], durs[0] + durs[1] + durs[2] + durs[3] + durs[4], durs[0] + durs[1] + durs[2] + durs[3] + durs[4] + durs[5], durs[0] + durs[1] + durs[2] + durs[3] + durs[4] + durs[5] + durs[6]];
-        const clip4End = cum[4], clip5End = cum[5], clip6End = cum[6], clip7End = cum[7];
-        const total = cum[7] + durs[7];                                  // end of clip8 (page end)
+        // continuous-timeline offsets (6 clips)
+        const cum = [0, durs[0], durs[0] + durs[1], durs[0] + durs[1] + durs[2], durs[0] + durs[1] + durs[2] + durs[3], durs[0] + durs[1] + durs[2] + durs[3] + durs[4]];
+        const clip4End = cum[4], clip5End = cum[5];
+        const total = cum[5] + durs[5];                                  // end of clip6 (AI chapter)
         const anchorTime = cum[2] + ANCHOR_CLIP_T;                       // clip3 @ 6s
         // live scroll milestones (absolute document coords)
         const heroTop = hero.getBoundingClientRect().top + sy;           // timeline t=0
@@ -56,21 +56,17 @@ function VideoBackdrop() {
         const ch07 = document.getElementById("ch07");
         const ch07Top = ch07 ? ch07.getBoundingClientRect().top + sy : pinEnd + vh * 4;   // clip5 ends
         const ch09 = document.getElementById("ch09");
-        const ch09Top = ch09 ? ch09.getBoundingClientRect().top + sy : ch07Top + vh * 6;  // clip6 ends (ch08 done)
-        const ch11 = document.getElementById("ch11");
-        const ch11Top = ch11 ? ch11.getBoundingClientRect().top + sy : ch09Top + vh * 4;  // clip7 ends
-        const docMax = Math.max(ch11Top + vh, document.documentElement.scrollHeight - vh); // clip8 ends (page bottom)
-        // piecewise-linear scroll → global video time (mapRange clamps). The 8 clips form
-        // one continuous backdrop from hero all the way to the bottom of the page.
+        const ch09Top = ch09 ? ch09.getBoundingClientRect().top + sy : ch07Top + vh * 6;  // clip6 ends, right after the AI chapter
+        // piecewise-linear scroll → global video time. clips 1–4 scrub hero→ch05; clip5
+        // covers the architecture + workspace chapters; clip6 runs through the flagship +
+        // AI chapters and finishes as the AI chapter ends.
         const vt = sy <= ch05Top ? mapRange(sy, heroTop, ch05Top, 0, anchorTime) :
         sy <= pinEnd ? mapRange(sy, ch05Top, pinEnd, anchorTime, clip4End) :
         sy <= ch07Top ? mapRange(sy, pinEnd, ch07Top, clip4End, clip5End) :
-        sy <= ch09Top ? mapRange(sy, ch07Top, ch09Top, clip5End, clip6End) :
-        sy <= ch11Top ? mapRange(sy, ch09Top, ch11Top, clip6End, clip7End) :
-        mapRange(sy, ch11Top, docMax, clip7End, total);
+        mapRange(sy, ch07Top, ch09Top, clip5End, total);
         // which clip owns this instant + its local time
         let idx = 0;
-        if (vt >= cum[7]) idx = 7;else if (vt >= cum[6]) idx = 6;else if (vt >= cum[5]) idx = 5;else if (vt >= cum[4]) idx = 4;else if (vt >= cum[3]) idx = 3;else if (vt >= cum[2]) idx = 2;else if (vt >= cum[1]) idx = 1;else idx = 0;
+        if (vt >= cum[5]) idx = 5;else if (vt >= cum[4]) idx = 4;else if (vt >= cum[3]) idx = 3;else if (vt >= cum[2]) idx = 2;else if (vt >= cum[1]) idx = 1;else idx = 0;
         const local = Math.min(durs[idx] - 0.03, Math.max(0, vt - cum[idx]));
         // on a clip switch, snap the incoming clip to its frame so the crossfade
         // blends matching frames (clips are authored to connect seamlessly).
@@ -87,8 +83,9 @@ function VideoBackdrop() {
           // never backlog → silky scrub instead of stutter.
           if (!v.seeking && Math.abs(v.currentTime - smoothT[idx]) > 0.004) {try {v.currentTime = smoothT[idx];} catch (e) {}}
         }
-        // The backdrop now runs continuously to the bottom of the page — no fade-out.
-        if (layer.current) layer.current.style.opacity = "1";
+        // Clip 6 finishes as the AI chapter ends; fade the backdrop to black just before
+        // the next chapter so it hands off cleanly there.
+        if (layer.current) layer.current.style.opacity = String(mapRange(sy, ch09Top - vh * 0.6, ch09Top, 1, 0));
       }
       rafId = requestAnimationFrame(loop);
     };
@@ -104,8 +101,6 @@ function VideoBackdrop() {
       <video ref={v3} muted playsInline preload="auto" style={vs()} />
       <video ref={v4} muted playsInline preload="auto" style={vs()} />
       <video ref={v5} muted playsInline preload="auto" style={vs()} />
-      <video ref={v6} muted playsInline preload="auto" style={vs()} />
-      <video ref={v7} muted playsInline preload="auto" style={vs()} />
     </div>);
 
 }
@@ -196,7 +191,7 @@ function ChThesis() {
     <RightAct inRef={ref} label="01 Product direction" height="320vh" textMax={500}>
       <Eyebrow idx="01">{t("Product direction", "产品方向")}</Eyebrow>
       <h2 style={{ fontSize: "clamp(1.7rem,1.2rem+1.7vw,2.7rem)", fontWeight: 500, color: "#fff", letterSpacing: "-0.025em", margin: "16px 0", lineHeight: 1.12, textWrap: "balance" }}>{t("Revit is already reducing fragmented tool state.", "Revit 已经在减少工具状态的碎片化。")}</h2>
-      <p style={{ fontSize: 15.5, color: "var(--text-on-dark-hi)", lineHeight: 1.55, marginBottom: 12 }}>{t("In Revit 2026, stair creation settings — Location Line, Offset, Actual Run Width, Automatic Landing — lived in the Options Bar, away from the contextual ribbon. In Revit 2027 those controls move into the Modify | Create Stair ribbon itself.", "在 Revit 2026 里，楼梯创建参数——Location Line、Offset、Actual Run Width、Automatic Landing——位于 Options Bar，远离上下文工具栏。到 Revit 2027，它们被收进了 Modify | Create Stair 工具栏本身。")}</p>
+      <p style={{ fontSize: 15.5, color: "var(--text-on-dark-hi)", lineHeight: 1.55, marginBottom: 12 }}>{t("In Revit 2026, stair creation settings like Location Line, Offset, Actual Run Width and Automatic Landing lived in the Options Bar, away from the contextual ribbon. In Revit 2027 those controls move into the Modify | Create Stair ribbon itself.", "在 Revit 2026 里，楼梯创建参数——Location Line、Offset、Actual Run Width、Automatic Landing——位于 Options Bar，远离上下文工具栏。到 Revit 2027，它们被收进了 Modify | Create Stair 工具栏本身。")}</p>
       <p style={{ fontSize: 15.5, color: "var(--text-on-dark-mid)", lineHeight: 1.55, marginBottom: 12 }}>{t("That is more than a layout change. It reduces how much users must scan between UI zones just to read the current tool state — the active tool, its key settings and its action now sit together.", "这不只是按钮换了位置。它减少了用户为读懂当前工具状态、而在不同界面区域之间来回扫视——当前工具、关键设置与动作入口被放到了一起。")}</p>
       <p style={{ fontFamily: "var(--font-display)", fontSize: "clamp(1.05rem,0.95rem+0.5vw,1.35rem)", fontWeight: 500, color: "var(--typical-300)", lineHeight: 1.32, letterSpacing: "-0.01em", marginBottom: 16 }}>{t("StepWise follows the same direction — but applies it to a harder problem: not stair creation, but stair-system maintenance.", "StepWise 延续同一方向——但把它推进到更难的问题：不是创建楼梯，而是维护楼梯系统。")}</p>
       <figure style={{ margin: 0, borderRadius: "var(--r-md)", overflow: "hidden", border: "1px solid var(--line-on-dark-2)", background: "#0b0e13" }}
@@ -428,7 +423,7 @@ function ChModelFirst() {
         <div style={{ width: "100%", paddingInline: "clamp(26px,5.5vw,112px)", display: "flex", justifyContent: "flex-start" }}>
           <div style={{ width: "min(100%, 520px)", padding: "26px 30px", margin: "-26px -30px", borderRadius: 18, background: "radial-gradient(135% 130% at 18% 45%, rgba(0,0,0,0.84), rgba(0,0,0,0.5) 55%, transparent 82%)" }}>
             <Eyebrow idx="05">{t("Model-first setup", "明确建模")}</Eyebrow>
-            <h2 style={{ fontSize: "clamp(1.6rem,1.2rem+1.5vw,2.5rem)", fontWeight: 500, color: "#fff", letterSpacing: "-0.025em", margin: "16px 0 10px", lineHeight: 1.13 }}>{t("Explicit modeling, not “generate me a stair.”", "明确建模，不是“帮我生成楼梯”。")}</h2>
+            <h2 style={{ fontSize: "clamp(1.6rem,1.2rem+1.5vw,2.5rem)", fontWeight: 500, color: "#fff", letterSpacing: "-0.025em", margin: "16px 0 10px", lineHeight: 1.13 }}>{t("Explicit modeling, not auto-generation.", "明确建模，不是自动生成。")}</h2>
             <p style={{ fontSize: 15, color: "var(--text-on-dark-mid)", marginBottom: 8, lineHeight: 1.5 }}>{t("StepWise starts where Revit users already work: plan, levels, properties and preview — boundary, level range, typical rule, preview, exceptions, and Apply only after impact review.", "StepWise 从 Revit 用户已有的工作方式开始：平面、楼层、属性、预览——边界、楼层范围、典型规则、预览、例外，并在影响审阅后才提交。")}</p>
             <p style={{ fontSize: 13.5, color: "var(--text-on-dark-lo)", marginBottom: 18, lineHeight: 1.5 }}>{t("BIM users need control. The system can assist, check and preview — but it should not silently decide geometry, scope or exceptions.", "BIM 用户需要控制感。系统可以辅助、检查、预览——但不应静默决定几何、范围或例外。")}</p>
             <div style={{ display: "flex", flexDirection: "column", gap: 1 }}>

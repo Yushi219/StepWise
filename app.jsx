@@ -105,6 +105,7 @@ const SECTIONS = [
 { id: "ch05", label: ["Model-first", "建模"], el: () => <ChModelFirst /> },
 { id: "ch06", label: ["Workspace", "工作台"], el: () => <ChWorkspace /> },
 { id: "ch07", label: ["Core flow", "操作流"], el: () => <ChFlow /> },
+{ id: "arch", label: ["Fit", "融合"], el: () => <ChArchitecture /> },
 { id: "ch08", label: ["AI", "AI助手"], el: () => <ChNetwork /> },
 { id: "ch09", label: ["Details", "细节"], el: () => <ChLab /> },
 { id: "ch10", label: ["MVP", "取舍"], el: () => <ChMVP /> },
@@ -171,7 +172,7 @@ function App() {
 function componentName(s) {return s.id;}
 function isReady(s) {
   const map = {
-    hero: "Hero", ch01: "ChThesis", ch02: "ChResearch", ch03: "ChRootProblem", ch04: "ChPrinciples", ch05: "ChModelFirst",
+    hero: "Hero", ch01: "ChThesis", ch02: "ChResearch", ch03: "ChRootProblem", ch04: "ChPrinciples", ch05: "ChModelFirst", arch: "ChArchitecture",
     ch06: "ChWorkspace", ch07: "ChFlow", ch08: "ChNetwork", ch09: "ChLab", ch10: "ChMVP",
     ch11: "ChMetrics", closing: "ChClosing"
   };

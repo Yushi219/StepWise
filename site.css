@@ -44,7 +44,7 @@ body { background: #000; }
 
 /* Legibility veil — from ch06 onward the content sits over a continuous video; a
    content-width semi-transparent panel (not full-screen) keeps text readable. */
-#ch06 .wrap, #ch07 .wrap, #ch08 .wrap, #ch09 .wrap, #ch10 .wrap, #ch11 .wrap, #closing .wrap {
+#arch .wrap, #ch06 .wrap, #ch07 .wrap, #ch08 .wrap, #ch09 .wrap, #ch10 .wrap, #ch11 .wrap, #closing .wrap {
   background: rgba(8, 10, 14, 0.86);
   border: 1px solid var(--line-on-dark);
   border-radius: var(--r-lg);
@@ -57,6 +57,12 @@ body { background: #000; }
 #ch07 > .slide, #ch10 > .slide { position: sticky; top: 0; height: 100vh; min-height: 0; overflow: hidden; padding-block: clamp(20px, 3vh, 44px); }
 #ch09 { display: block; height: 180vh; }
 #ch09 > .slide { position: sticky; top: 0; min-height: 100vh; align-items: flex-start; padding-block: clamp(40px, 6vh, 80px); }
+
+/* ch06 "How it fits Revit" — 3-part architecture grid collapses on narrow screens */
+@media (max-width: 900px) {
+  .arch-grid { grid-template-columns: 1fr !important; }
+  .arch-grid > .arch-arrow { display: none; }
+}
 .slide__grid { display: grid; grid-template-columns: 0.92fr 1.08fr; gap: clamp(28px, 4vw, 64px); align-items: center; width: 100%; }
 .slide__grid--wide { grid-template-columns: 1fr; }
 @media (max-width: 920px) { .slide__grid { grid-template-columns: 1fr !important; } }
