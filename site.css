@@ -67,6 +67,9 @@ body { background: #000; }
 .arch-entries { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 14px; align-items: start; }
 @media (max-width: 1200px) { .arch-entries { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 @media (max-width: 760px) { .arch-entries { grid-template-columns: 1fr; } }
+/* every content image is click-to-zoom (see Lightbox in app.jsx) */
+#root img { cursor: zoom-in; }
+.lightbox img { cursor: default; }
 .slide__grid { display: grid; grid-template-columns: 0.92fr 1.08fr; gap: clamp(28px, 4vw, 64px); align-items: center; width: 100%; }
 .slide__grid--wide { grid-template-columns: 1fr; }
 @media (max-width: 920px) { .slide__grid { grid-template-columns: 1fr !important; } }

@@ -113,6 +113,43 @@ const SECTIONS = [
 { id: "closing", label: ["Close", "结语"], el: () => <ChClosing /> }];
 
 
+// Global image lightbox: any content image opens fullscreen on click. We listen in the
+// CAPTURE phase and stopPropagation so a click only zooms — the underlying hover already
+// drives panel/thumbnail switching. The overlay renders the raw <img>, so none of the
+// animated callout tags come along. Close on the × button, a backdrop click, or Esc.
+function Lightbox() {
+  const [src, setSrc] = useAppState(null);
+  const [alt, setAlt] = useAppState("");
+  useAppEffect(() => {
+    const onClick = (e) => {
+      const t = e.target;
+      if (!t || t.tagName !== "IMG" || (t.closest && t.closest(".lightbox"))) return;
+      e.preventDefault();
+      e.stopPropagation();
+      setSrc(t.currentSrc || t.src);
+      setAlt(t.alt || "");
+    };
+    document.addEventListener("click", onClick, true);
+    return () => document.removeEventListener("click", onClick, true);
+  }, []);
+  useAppEffect(() => {
+    if (!src) return;
+    const onKey = (e) => {if (e.key === "Escape") setSrc(null);};
+    document.addEventListener("keydown", onKey);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {document.removeEventListener("keydown", onKey);document.body.style.overflow = prev;};
+  }, [src]);
+  if (!src) return null;
+  const close = () => setSrc(null);
+  return (
+    <div className="lightbox" onClick={close} style={{ position: "fixed", inset: 0, zIndex: 99999, background: "rgba(4,6,11,0.92)", backdropFilter: "blur(2px)", WebkitBackdropFilter: "blur(2px)", display: "flex", alignItems: "center", justifyContent: "center", padding: "clamp(16px,4vw,64px)", cursor: "zoom-out" }}>
+      <button type="button" aria-label="Close" onClick={close} style={{ position: "fixed", top: 16, right: 20, width: 42, height: 42, borderRadius: "50%", border: "1px solid rgba(255,255,255,0.28)", background: "rgba(0,0,0,0.45)", color: "#fff", fontSize: 24, lineHeight: 1, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>×</button>
+      <img src={src} alt={alt} onClick={(e) => e.stopPropagation()} style={{ maxWidth: "92vw", maxHeight: "90vh", objectFit: "contain", borderRadius: 8, boxShadow: "0 24px 80px rgba(0,0,0,0.65)", cursor: "default" }} />
+    </div>);
+
+}
+
 function App() {
   const lang = useLang();
   // Global reveal-on-scroll. Uses a scroll listener + getBoundingClientRect rather
@@ -160,6 +197,7 @@ function App() {
   return (
     <div className="site-root">
       <VideoBackdrop />
+      <Lightbox />
       <ScrollProgressBar />
       <TopBar />
       <ProgressRail sections={SECTIONS.filter((s) => isReady(s))} />
