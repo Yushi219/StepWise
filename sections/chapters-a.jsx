@@ -421,29 +421,28 @@ function ChPrinciples() {
 
 }
 
-/* 05 · Model-first setup — explicit modeling, told as a left-hand text block over the
-   scrubbed video backdrop (the moving section behind carries the visual). The step
-   list advances on scroll and ends on Review Impact, not a silent Apply. */
+/* 05 · Entry flow — StepWise adopts an existing native Revit stair (or multistory
+   stair) into a managed stair system. Left-hand step list over the scrubbed video:
+   it does not create geometry; it scans, groups by behavior and surfaces exceptions. */
 function ChModelFirst() {
   const { ref, progress } = useScrollProgress();
   const steps = [
-    { t: ["Select stairwell boundary", "选择楼梯井边界"], d: ["Pick the stairwell boundary in plan.", "在平面里选择楼梯井边界。"] },
-    { t: ["Set base & top level", "设定起止楼层"], d: ["L1 → L20. The system reads each floor-to-floor height.", "L1 → L20。系统读取每层层高。"] },
-    { t: ["Define the typical rule", "定义典型规则"], d: ["Run width, landing, railing and support, kept clear instead of nested in dialogs.", "梯段宽度、平台、栏杆、支撑，清晰呈现，而不是藏在嵌套对话框里。"] },
-    { t: ["Preview the stair stack", "预览楼梯堆叠"], d: ["A non-committed preview builds level by level.", "未提交的预览，逐层搭建。"] },
-    { t: ["Mark exceptions", "标记例外"], d: ["L10 / L20 equipment floors become local overrides, not duplicate types.", "L10 / L20 设备层成为本地覆盖，而不是复制类型。"] },
-    { t: ["Review impact & apply", "审阅影响后提交"], d: ["See affected runs, landings, railings and views, then Review Impact instead of a silent Apply.", "先看受影响的梯段、平台、栏杆与视图，再进入 Review Impact，而不是静默 Apply。"] },
+    { t: ["Start with native Revit stairs", "从原生 Revit 楼梯开始"], d: ["The user creates the stair with Revit's existing tools.", "用户用 Revit 现有工具创建楼梯。"] },
+    { t: ["Create Stair System", "创建楼梯系统"], d: ["A contextual ribbon action adopts the selected stair as a managed stair system.", "上下文工具栏的一个操作，把选中的楼梯接入为受管理的楼梯系统。"] },
+    { t: ["Scan existing structure", "扫描已有结构"], d: ["StepWise reads the selected stair, connected levels, shared types and related components.", "StepWise 读取选中的楼梯、关联楼层、共享类型与相关组件。"] },
+    { t: ["Group by behavior", "按行为分组"], d: ["Levels with the same stair behavior become typical levels; differences surface as potential exceptions.", "行为相同的楼层成为典型层；差异作为潜在例外被标出。"] },
+    { t: ["Review exceptions", "确认例外"], d: ["The user confirms which local differences are preserved as managed exceptions.", "用户确认哪些局部差异保留为受管理的例外。"] },
+    { t: ["Enter System View", "进入系统视图"], d: ["The stair is now managed as a system, while native Revit types stay unchanged.", "楼梯现在作为系统被管理，而原生 Revit 类型保持不变。"] },
   ];
   const active = Math.min(5, Math.floor(mapRange(progress, 0.05, 0.95, 0, 6)));
   return (
-    <section ref={ref} data-screen-label="05 Model-first setup" style={{ height: "320vh", position: "relative", background: "transparent" }}>
+    <section ref={ref} data-screen-label="05 Entry flow" style={{ height: "320vh", position: "relative", background: "transparent" }}>
       <div style={{ position: "sticky", top: 0, height: "100vh", display: "flex", alignItems: "center", overflow: "hidden" }}>
         <div style={{ width: "100%", paddingInline: "clamp(26px,5.5vw,112px)", display: "flex", justifyContent: "flex-start" }}>
           <div style={{ width: "min(100%, 520px)", padding: "26px 30px", margin: "-26px -30px", borderRadius: 18, background: "radial-gradient(135% 130% at 18% 45%, rgba(0,0,0,0.84), rgba(0,0,0,0.5) 55%, transparent 82%)" }}>
-            <Eyebrow idx="05">{t("Model-first setup", "明确建模")}</Eyebrow>
-            <h2 style={{ fontSize: "clamp(1.6rem,1.2rem+1.5vw,2.5rem)", fontWeight: 500, color: "#fff", letterSpacing: "-0.025em", margin: "16px 0 10px", lineHeight: 1.13 }}>{t("Explicit modeling, not auto-generation.", "明确建模，不是自动生成。")}</h2>
-            <p style={{ fontSize: 15, color: "var(--text-on-dark-mid)", marginBottom: 8, lineHeight: 1.5 }}>{t("StepWise starts where Revit users already work: plan, levels, properties, preview.", "StepWise 从 Revit 用户已有的地方开始：平面、楼层、属性、预览。")}</p>
-            <p style={{ fontSize: 13.5, color: "var(--text-on-dark-lo)", marginBottom: 18, lineHeight: 1.5 }}>{t("BIM users need control. The system can assist, check and preview, but it should not silently decide geometry, scope or exceptions.", "BIM 用户需要控制感。系统可以辅助、检查、预览，但不应静默决定几何、范围或例外。")}</p>
+            <Eyebrow idx="05">{t("Entry flow", "接入流程")}</Eyebrow>
+            <h2 style={{ fontSize: "clamp(1.6rem,1.2rem+1.5vw,2.5rem)", fontWeight: 500, color: "#fff", letterSpacing: "-0.025em", margin: "16px 0 10px", lineHeight: 1.13 }}>{t("From native stair to managed system.", "从原生楼梯，到可管理的系统。")}</h2>
+            <p style={{ fontSize: 15, color: "var(--text-on-dark-mid)", marginBottom: 18, lineHeight: 1.5 }}>{t("StepWise does not create the stair. It adopts an existing Revit stair or multistory stair, then makes its levels, exceptions, shared types and connected components easier to manage.", "StepWise 不负责画楼梯。它把已有的 Revit 楼梯或 Multistory Stairs 接入为一个可管理的楼梯系统，让它的楼层、例外、共享类型与关联组件更易管理。")}</p>
             <div style={{ display: "flex", flexDirection: "column", gap: 1 }}>
               {steps.map((st, i) => {
                 const on = i === active, done = i < active;
