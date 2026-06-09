@@ -19,15 +19,15 @@ const { useState: useA, useEffect: useAE, useRef: useARef } = React;
    The scroll→time map is piecewise-linear, anchored to those two LIVE positions,
    so the contract holds no matter how the section heights change. */
 function VideoBackdrop() {
-  const v0 = useARef(null),v1 = useARef(null),v2 = useARef(null),v3 = useARef(null),v4 = useARef(null),v5 = useARef(null);
+  const v0 = useARef(null),v1 = useARef(null),v2 = useARef(null),v3 = useARef(null),v4 = useARef(null),v5 = useARef(null),v6 = useARef(null),v7 = useARef(null);
   const layer = useARef(null);
   const lastIdx = useARef(-1);
   useAE(() => {
-    const vids = [v0.current, v1.current, v2.current, v3.current, v4.current, v5.current];
+    const vids = [v0.current, v1.current, v2.current, v3.current, v4.current, v5.current, v6.current, v7.current];
     // Fetch each clip fully into memory as a Blob → makes it seekable so scroll can
     // scrub currentTime frame-by-frame (the static server has no byte-range support).
     const urls = [];
-    ["assets/video/1.mp4", "assets/video/2.mp4", "assets/video/3.mp4", "assets/video/4.mp4", "assets/video/5.mp4", "assets/video/6.mp4"].forEach((src, i) => {
+    ["assets/video/1.mp4", "assets/video/2.mp4", "assets/video/3.mp4", "assets/video/4.mp4", "assets/video/5.mp4", "assets/video/6.mp4", "assets/video/7.mp4", "assets/video/8.mp4"].forEach((src, i) => {
       const v = vids[i];if (!v) return;v.muted = true;v.pause();
       fetch(src).then((r) => r.blob()).then((b) => {const u = URL.createObjectURL(b);urls[i] = u;v.src = u;v.load();}).catch(() => {});
     });
@@ -35,7 +35,7 @@ function VideoBackdrop() {
     setActive(0);
 
     const ANCHOR_CLIP_T = 6.0;        // clip 3 must sit here when #ch05 centres
-    const smoothT = [0, 0, 0, 0, 0, 0];  // lerped currentTime per clip
+    const smoothT = [0, 0, 0, 0, 0, 0, 0, 0];  // lerped currentTime per clip
     let rafId = 0;
     const loop = () => {
       const hero = document.getElementById("hero");
@@ -45,9 +45,9 @@ function VideoBackdrop() {
         const vh = window.innerHeight;
         const sy = window.pageYOffset || document.documentElement.scrollTop || 0;
         // continuous-timeline offsets (6 clips)
-        const cum = [0, durs[0], durs[0] + durs[1], durs[0] + durs[1] + durs[2], durs[0] + durs[1] + durs[2] + durs[3], durs[0] + durs[1] + durs[2] + durs[3] + durs[4]];
-        const clip4End = cum[4], clip5End = cum[5];
-        const total = cum[5] + durs[5];                                  // end of clip6 (AI chapter)
+        const cum = [0]; for (let i = 1; i < 8; i++) cum[i] = cum[i - 1] + durs[i - 1];
+        const clip4End = cum[4], clip5End = cum[5], clip6End = cum[6];
+        const total = cum[7] + durs[7];                                  // end of clip8 (page end)
         const anchorTime = cum[2] + ANCHOR_CLIP_T;                       // clip3 @ 6s
         // live scroll milestones (absolute document coords)
         const heroTop = hero.getBoundingClientRect().top + sy;           // timeline t=0
@@ -57,16 +57,18 @@ function VideoBackdrop() {
         const ch07Top = ch07 ? ch07.getBoundingClientRect().top + sy : pinEnd + vh * 4;   // clip5 ends
         const ch09 = document.getElementById("ch09");
         const ch09Top = ch09 ? ch09.getBoundingClientRect().top + sy : ch07Top + vh * 6;  // clip6 ends, right after the AI chapter
+        const docBottom = Math.max(ch09Top + vh, (document.documentElement.scrollHeight || 0) - vh);  // clips 7–8 run to here
         // piecewise-linear scroll → global video time. clips 1–4 scrub hero→ch05; clip5
         // covers the architecture + workspace chapters; clip6 runs through the flagship +
-        // AI chapters and finishes as the AI chapter ends.
+        // AI chapters; clips 7–8 carry the remaining chapters to the closing.
         const vt = sy <= ch05Top ? mapRange(sy, heroTop, ch05Top, 0, anchorTime) :
         sy <= pinEnd ? mapRange(sy, ch05Top, pinEnd, anchorTime, clip4End) :
         sy <= ch07Top ? mapRange(sy, pinEnd, ch07Top, clip4End, clip5End) :
-        mapRange(sy, ch07Top, ch09Top, clip5End, total);
+        sy <= ch09Top ? mapRange(sy, ch07Top, ch09Top, clip5End, clip6End) :
+        mapRange(sy, ch09Top, docBottom, clip6End, total);
         // which clip owns this instant + its local time
         let idx = 0;
-        if (vt >= cum[5]) idx = 5;else if (vt >= cum[4]) idx = 4;else if (vt >= cum[3]) idx = 3;else if (vt >= cum[2]) idx = 2;else if (vt >= cum[1]) idx = 1;else idx = 0;
+        if (vt >= cum[7]) idx = 7;else if (vt >= cum[6]) idx = 6;else if (vt >= cum[5]) idx = 5;else if (vt >= cum[4]) idx = 4;else if (vt >= cum[3]) idx = 3;else if (vt >= cum[2]) idx = 2;else if (vt >= cum[1]) idx = 1;else idx = 0;
         const local = Math.min(durs[idx] - 0.03, Math.max(0, vt - cum[idx]));
         // on a clip switch, snap the incoming clip to its frame so the crossfade
         // blends matching frames (clips are authored to connect seamlessly).
@@ -83,9 +85,9 @@ function VideoBackdrop() {
           // never backlog → silky scrub instead of stutter.
           if (!v.seeking && Math.abs(v.currentTime - smoothT[idx]) > 0.004) {try {v.currentTime = smoothT[idx];} catch (e) {}}
         }
-        // Clip 6 finishes as the AI chapter ends; fade the backdrop to black just before
-        // the next chapter so it hands off cleanly there.
-        if (layer.current) layer.current.style.opacity = String(mapRange(sy, ch09Top - vh * 0.6, ch09Top, 1, 0));
+        // Clips 7–8 now carry the backdrop through the rest of the page, so keep it
+        // visible all the way to the closing (the legibility veil handles contrast).
+        if (layer.current) layer.current.style.opacity = "1";
       }
       rafId = requestAnimationFrame(loop);
     };
@@ -101,6 +103,8 @@ function VideoBackdrop() {
       <video ref={v3} muted playsInline preload="auto" style={vs()} />
       <video ref={v4} muted playsInline preload="auto" style={vs()} />
       <video ref={v5} muted playsInline preload="auto" style={vs()} />
+      <video ref={v6} muted playsInline preload="auto" style={vs()} />
+      <video ref={v7} muted playsInline preload="auto" style={vs()} />
     </div>);
 
 }
@@ -254,7 +258,6 @@ function ChResearch() {
         </div>
       </div>
       <p style={{ fontSize: 14, color: "var(--text-on-dark-mid)", lineHeight: 1.5, marginBottom: 12 }}>{t("Intent lives at the system level; the tool splits it into objects and hidden dependencies.", "意图在系统层，工具却把它拆成零件和隐藏的依赖。")}</p>
-      <p style={{ fontFamily: "var(--font-display)", fontSize: "clamp(1.05rem,0.95rem+0.5vw,1.35rem)", fontWeight: 500, color: "var(--typical-300)", lineHeight: 1.32 }}>{t("So I am not proposing another parameter panel. I am proposing a way to make stair intent visible, scoped and reviewable inside Revit's native workflow.", "所以我提的不是又一个参数面板，而是在 Revit 原生流程里，让楼梯意图变得可见、可定范围、可预览。")}</p>
       <ActProgress progress={progress} tint="var(--exception-400)" />
     </RightAct>);
 
@@ -273,11 +276,9 @@ function ChRootProblem() {
       title: ["Case signals", "题目信号"],
       insight: ["The brief keeps describing maintenance failure, not just drawing.", "题目反复在说维护失效，而不只是画图难。"],
       bullets: [
-        ["Floor-by-floor edits create repetitive work", "逐层修改造成重复工作"],
-        ["Small changes force new types", "小改动也要新建类型"],
+        ["Floor-by-floor edits; small changes force new types", "逐层修改，小改动也要新建类型"],
         ["Shared components create unwanted dependencies", "共享组件带来意外依赖"],
-        ["Users want global edits with local variation", "用户想全局编辑，同时保留局部变化"],
-        ["No clear preview of parameter impact", "参数影响缺少可视预览"],
+        ["Wants global edits with local variation, plus impact preview", "想全局编辑、保留局部变化，并能预览影响"],
       ],
       detail: ["Signal: users are trying to manage a stair as a system, but the interface exposes it as scattered edit points.", "信号：用户想管理的是一套楼梯系统，但界面暴露给他们的是分散的编辑点。"],
     },
@@ -286,11 +287,9 @@ function ChRootProblem() {
       title: ["Practitioner feedback", "设计师反馈"],
       insight: ["Pain is uneven, but sharp in model-heavy, change-heavy work.", "痛点不均匀，但在建模重、变更多时很尖锐。"],
       bullets: [
-        ["Some designers manage stairs once the tool is learned", "有些设计师学会后可以应对"],
-        ["Schools / hospitals may not expose the worst repetition", "学校和医院项目不一定暴露最极端的重复"],
-        ["Model-heavy users still struggle after height changes", "建模更重的用户在层高变化后仍会卡住"],
-        ["Landing / railing / baluster need manual cleanup", "平台、栏杆、栏杆柱经常需要手动清理"],
-        ["Users want predictability over more automation", "用户要的是更可预测，而非更多自动化"],
+        ["Once learned, many cope (schools / hospitals rarely hit the worst)", "学会后多数能应对（学校 / 医院少有最极端的）"],
+        ["Model-heavy work still needs cleanup after height changes", "建模重的流程在层高变化后仍要手动清理"],
+        ["They want predictability, not more automation", "他们要的是可预测，而非更多自动化"],
       ],
       detail: ["Signal: the opportunity is not universal stair simplification. It is change management for complex stair systems.", "信号：机会点不是泛泛简化所有楼梯操作，而是复杂楼梯系统的变更管理。"],
     },
@@ -299,10 +298,7 @@ function ChRootProblem() {
       title: ["Market scan", "市场扫描"],
       insight: ["Most tools help create stairs; few maintain intent inside Revit.", "多数工具帮生成楼梯，很少帮在 Revit 内维护意图。"],
       bullets: [
-        ["Stair generation tools", "楼梯生成工具"],
-        ["Rebar and detailing tools", "钢筋和细部工具"],
-        ["Scan-to-BIM / as-built tools", "扫描转 BIM / as-built 工具"],
-        ["Special stair geometry tools", "特殊楼梯几何工具"],
+        ["Tools for generation, rebar, scan-to-BIM, special geometry", "生成、钢筋、scan-to-BIM、特殊几何的工具"],
         ["Gap: hierarchy, scope, exceptions, impact preview", "空白：层级、范围、例外、影响预览"],
       ],
       detail: ["Signal: existing tools add capability around Revit, but the deeper gap is native system visibility inside Revit.", "信号：现有工具更多是在 Revit 周围增加能力，真正的空白是 Revit 内部的系统可见性。"],

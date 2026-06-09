@@ -67,11 +67,11 @@ function ChArchitecture() {
   const etag = (n, en, zh) => <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 7 }}><span style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: "var(--accent)" }}>{n}</span><span style={{ fontFamily: "var(--font-mono)", fontSize: 10.5, letterSpacing: "0.05em", textTransform: "uppercase", color: "var(--text-on-dark-mid)" }}>{t(en, zh)}</span></div>;
   const menuItem = (en, zh) => <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "5px 4px", fontSize: 11.5, color: "var(--text-on-dark-mid)" }}><span style={{ width: 4, height: 4, borderRadius: "50%", background: "var(--text-on-dark-lo)", flex: "0 0 auto" }} />{t(en, zh)}</div>;
   const swLayers = [
-    { n: "04", name: ["Managed Exceptions", "受管理的例外"], desc: ["stores only what differs from the typical rule", "只记录与典型规则不同的部分"], items: [["L10 / L20", "L10 / L20"], ["floor-height override", "层高覆盖"], ["riser-count override", "踏步数覆盖"], ["landing-type override", "平台类型覆盖"], ["railing review", "栏杆复查"]] },
-    { n: "03", name: ["Typical Rule", "典型规则"], desc: ["the default, built from existing type params, not a new set", "系统默认值，引用现有类型参数，不另造一套"], items: [["typical stair", "典型 stair"], ["run", "run"], ["landing", "landing"], ["railing", "railing"], ["support", "support"]] },
+    { n: "04", name: ["Managed Exceptions", "受管理的例外"], desc: ["stores only what differs from the typical rule", "只记录与典型规则不同的部分"], items: [["L10 / L20", "L10 / L20"], ["floor-height + riser overrides", "层高 + 踏步数覆盖"], ["landing / railing review", "平台 / 栏杆复查"]] },
+    { n: "03", name: ["Typical Rule", "典型规则"], desc: ["the default, built from existing type params, not a new set", "系统默认值，引用现有类型参数，不另造一套"], items: [["one default per system", "每个系统一个默认"], ["inherited by typical levels", "被典型层继承"]] },
     { n: "02", name: ["Stair System", "楼梯系统"], desc: ["a new system object (e.g. East Stair) that references cross-floor instances", "新的系统级对象，如 East Stair，引用跨楼层实例"], items: [["cross-floor instances", "跨楼层实例"], ["related components", "关联组件"]] },
   ];
-  const foundation = { n: "01", name: ["Existing Revit Types", "Revit 原有类型"], desc: ["unchanged · the source of record", "保持不变 · 基础数据"], items: [["Stair Type", "楼梯类型"], ["Run Type", "梯段类型"], ["Landing Type", "平台类型"], ["Railing Type", "栏杆类型"], ["Baluster", "栏杆柱"], ["Support", "支撑"], ["Cut Mark", "剖断标记"], ["View / Tag / Doc", "视图 / 标签 / 图纸"]] };
+  const foundation = { n: "01", name: ["Existing Revit Types", "Revit 原有类型"], desc: ["unchanged · the source of record", "保持不变 · 基础数据"], items: [["Stair Type", "楼梯类型"], ["Run Type", "梯段类型"], ["Landing Type", "平台类型"], ["Railing Type", "栏杆类型"], ["Baluster", "栏杆柱"], ["Support", "支撑"], ["View / Tag / Doc", "视图 / 标签 / 图纸"]] };
   const band = (L, blue, d) => (
     <div style={{ ...rev(d), display: "flex", gap: 14, alignItems: "center", flexWrap: "wrap", borderRadius: "var(--r-lg)", border: "1px solid " + (blue ? "var(--accent)" : "var(--line-on-dark)"), borderLeft: "3px solid " + (blue ? "var(--accent)" : "var(--line-on-dark-2)"), background: blue ? "rgba(61,125,255,0.10)" : "rgba(8,10,14,0.5)", padding: "11px 14px" }}>
       <div style={{ flex: "0 0 auto", minWidth: 186, maxWidth: 252 }}>
@@ -126,7 +126,6 @@ function ChArchitecture() {
         <div style={{ ...rev(0.42), marginTop: 36 }}>
           <div style={partEye}>{t("Native entry points · five seams", "原生入口 · 五个缝合点")}</div>
           <h3 style={partTitle}>{t("You don't start from StepWise. It meets you where you already work.", "你不必从 StepWise 开始，它就出现在你本来工作的地方。")}</h3>
-          <p style={partCopy}>{t("Users keep selecting stairs, opening Properties and clicking Edit Type. StepWise surfaces system awareness at each point and never blocks the change. It shows the impact first, then offers a safer path.", "用户照旧选中楼梯、打开 Properties、点击 Edit Type。StepWise 在每个位置浮现系统感知，且从不阻止改动，而是先展示影响，再给出更安全的路径。")}</p>
         </div>
         <div className="arch-entries" style={{ marginTop: 16 }}>
           {/* entry 1 — Properties */}
@@ -322,7 +321,6 @@ function ChFlow() {
               {f.bullets.map((b, i) => <li key={i} style={{ display: "flex", gap: 10, fontSize: 13.5, color: "var(--text-on-dark-mid)", lineHeight: 1.45 }}><Icon name="check" size={14} color="var(--ok-400)" style={{ flex: "none", marginTop: 2 }} />{b}</li>)}
             </ul>
           </div>
-          <div style={{ marginTop: 14, display: "inline-flex", alignItems: "center", gap: 8, fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: "0.04em", color: "var(--typical-300)", border: "1px solid var(--line-on-dark-2)", borderRadius: "var(--r-pill)", padding: "6px 12px" }}>{f.principle}</div>
         </div>
         {/* persistent punchline */}
         <div style={{ marginTop: 18, paddingTop: 16, borderTop: "1px solid var(--line-on-dark)", fontFamily: "var(--font-display)", fontSize: "clamp(1.1rem,0.95rem+0.6vw,1.45rem)", fontWeight: 500, letterSpacing: "-0.01em", color: "var(--text-on-dark-hi)", lineHeight: 1.3 }}>
@@ -476,9 +474,9 @@ function ChMVP() {
             <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 14 }}><span className="dot dot--ok" /><span style={{ fontSize: 13.5, fontWeight: 600, color: "var(--text-on-dark-hi)" }}>{t("In MVP", "MVP 包含")}</span></div>
             {inn.map((x, i) => <div key={i} style={{ display: "flex", gap: 9, fontSize: 14.5, color: "var(--text-on-dark-mid)", padding: "6px 0" }}><Icon name="check" size={14} color="var(--ok-400)" style={{ flex: "none", marginTop: 1 }} />{t(x[0], x[1])}</div>)}
           </div>
-          <div style={{ borderRadius: "var(--r-lg)", border: "1px solid var(--line-on-dark)", background: "#070a0f", padding: 20 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 14 }}><span style={{ width: 7, height: 7, borderRadius: "50%", background: "var(--text-on-dark-lo)" }} /><span style={{ fontSize: 13.5, fontWeight: 600, color: "var(--text-on-dark-lo)" }}>{t("Out of MVP", "MVP 不做")}</span></div>
-            {out.map((x, i) => <div key={i} style={{ display: "flex", gap: 9, fontSize: 14.5, color: "var(--text-on-dark-lo)", padding: "6px 0" }}><span style={{ width: 14, textAlign: "center", flex: "none" }}>×</span>{t(x[0], x[1])}</div>)}
+          <div style={{ borderRadius: "var(--r-lg)", border: "1px solid rgba(242,68,56,0.38)", background: "rgba(242,68,56,0.05)", padding: 20 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 14 }}><span style={{ width: 7, height: 7, borderRadius: "50%", background: "var(--warn-500)" }} /><span style={{ fontSize: 13.5, fontWeight: 600, color: "var(--text-on-dark-lo)" }}>{t("Out of MVP", "MVP 不做")}</span></div>
+            {out.map((x, i) => <div key={i} style={{ display: "flex", gap: 9, fontSize: 14.5, color: "var(--text-on-dark-lo)", padding: "6px 0" }}><span style={{ width: 14, textAlign: "center", flex: "none", color: "var(--warn-500)", fontWeight: 700 }}>×</span>{t(x[0], x[1])}</div>)}
           </div>
         </div>
       </div>
