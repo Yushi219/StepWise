@@ -92,7 +92,7 @@ function ChArchitecture() {
         <div style={{ maxWidth: 880, marginBottom: 28, ...rev(0) }}>
           <Eyebrow idx="06">{t("How it fits Revit", "与原生模型的融合")}</Eyebrow>
           <h2 style={{ fontSize: "clamp(1.7rem,1.2rem+1.6vw,2.6rem)", fontWeight: 500, color: "#fff", letterSpacing: "-0.025em", margin: "14px 0 0", lineHeight: 1.12 }}>{t("StepWise adds a system-level management layer above Revit's existing types.", "StepWise 在 Revit 原有类型之上，加一层楼梯系统管理层。")}</h2>
-          <p style={{ fontSize: 15, color: "var(--text-on-dark-mid)", marginTop: 13, lineHeight: 1.55 }}>{t("You rarely start from a blank model. StepWise adopts onto the stairs, types and projects you already have, and does not replace Revit's existing stair, run, landing or railing types. It relates those scattered objects into one stair system, defines which levels inherit the typical rule and which are exceptions, and tracks which parameters are inherited or locally overridden, so Revit stays Revit, only better managed.", "你很少从一个空模型开始。StepWise 可以接入你已有的楼梯、类型与项目，而不替代 Revit 原有的 stair / run / landing / railing type。它把这些分散的对象关联成一个楼梯系统，定义哪些楼层继承典型规则、哪些是例外，并记录哪些参数是继承、哪些是局部覆盖，让 Revit 仍是 Revit，只是被更好地管理。")}</p>
+          <p style={{ fontSize: 15, color: "var(--text-on-dark-mid)", marginTop: 13, lineHeight: 1.55 }}>{t("You rarely start from a blank model. StepWise adopts onto the stairs, types and projects you already have, referencing Revit's existing types instead of replacing them.", "你很少从一个空模型开始。StepWise 接入你已有的楼梯、类型与项目，引用 Revit 原有类型，而不是替换它们。")}</p>
         </div>
 
         {/* PART A — the data model, four layers */}
@@ -216,7 +216,7 @@ function ChWorkspace() {
     <section ref={ref} data-screen-label="07 Workspace" style={{ height: "260vh", position: "relative", background: "transparent" }}>
       <div style={{ position: "sticky", top: 0, height: "100vh", display: "flex", alignItems: "center", overflow: "hidden" }}>
         <div className="wrap" style={{ width: "100%", position: "relative", zIndex: 1 }}>
-          <Head idx="07" eye={t("The StepWise workspace", "StepWise 工作台")} title={t("A stair, as a system you can see and edit.", "把楼梯，变成一个看得见、改得动的系统。")} copy={t("One workspace replaces the maze of type dialogs: every level in the System Browser on the left, the live stair model in the centre, and the selected change on the right, with its cause, its exact scope and its full impact.", "一个工作台取代层层类型对话框：左侧的系统浏览器列出每一层，中央是实时楼梯模型，右侧是选中的变更，包括它的成因、精确范围与完整影响。")} style={{ maxWidth: 720, marginBottom: 20 }} />
+          <Head idx="07" eye={t("The StepWise workspace", "StepWise 工作台")} title={t("A stair, as a system you can see and edit.", "把楼梯，变成一个看得见、改得动的系统。")} copy={t("One workspace instead of a maze of type dialogs: levels on the left, the live model in the centre, the selected change and its full impact on the right.", "一个工作台，取代层层类型对话框：左侧楼层、中央实时模型、右侧选中的变更及其完整影响。")} style={{ maxWidth: 720, marginBottom: 20 }} />
           <RealUI src={UI.main} alt="StepWise workspace, East Stair System View" callouts={shown} />
           <div style={{ marginTop: 13, display: "flex", gap: 9, alignItems: "center", fontFamily: "var(--font-mono)", fontSize: 11, color: "var(--text-on-dark-lo)" }}>
             <span style={{ color: "var(--accent)" }}>{shown.length}/{zones.length}</span>
@@ -240,7 +240,7 @@ function ChFlow() {
       n: t("Capability 1 / 2", "能力 1 / 2"),
       short: t("Exception Manager", "例外管理器"),
       title: t("Vary locally, without cloning a type.", "局部变化，无需复制类型。"),
-      copy: t("Equipment floors inherit the typical stair rule and override only what differs. The difference becomes a managed exception, not another type, so the type list stays clean and every difference is intentional and traceable.", "设备层继承典型楼梯规则，只覆盖真正不同的部分。这个差异成为一个受管理的例外，而不是又一个类型，因此类型列表保持干净，每一处不同都有意而为、可追溯。"),
+      copy: t("Equipment floors inherit the typical rule and override only what differs. The difference becomes a managed exception, not another type.", "设备层继承典型规则，只覆盖真正不同的部分；差异成为受管理的例外，而不是又一个类型。"),
       bullets: [
         t("16 parameters inherited from the typical rule", "16 个参数继承自典型规则"),
         t("5 explicit local overrides: floor height, risers, landing", "5 个显式本地覆盖：层高、踢面数、平台"),
@@ -260,7 +260,7 @@ function ChFlow() {
       n: t("Capability 2 / 2", "能力 2 / 2"),
       short: t("Impact Preview", "影响预览"),
       title: t("See the blast radius before Apply.", "提交之前，先看清波及范围。"),
-      copy: t("StepWise previews geometry, components, exceptions, documentation, and related systems before anything is committed. Proposed geometry (blue) overlays the current model (grey); preserved exceptions stay orange and risks turn red.", "StepWise 在任何改动提交之前，预览几何、组件、例外、图纸与关联系统。拟改几何（蓝）叠加在现状模型（灰）之上；被保留的例外保持橙色，风险转为红色。"),
+      copy: t("Before anything commits, StepWise previews geometry, exceptions, documentation and related systems. Proposed geometry overlays the current model; risks turn red.", "提交之前，StepWise 预览几何、例外、图纸与关联系统；拟改几何叠加在现状之上，风险转为红色。"),
       bullets: [
         t("17 typical levels · 34 runs recalculated · 17 landings reviewed", "17 个标准层 · 重算 34 段梯段 · 复核 17 处平台"),
         t("Exceptions L10 / L20 preserved automatically", "L10 / L20 例外自动保留"),
@@ -360,7 +360,7 @@ function ChNetwork() {
           <div>
             <Eyebrow idx="09">{t("The AI boundary", "AI 的边界")}</Eyebrow>
             <h2 style={{ fontSize: "clamp(1.6rem,1.2rem+1.5vw,2.45rem)", fontWeight: 500, color: "#fff", letterSpacing: "-0.025em", lineHeight: 1.1, margin: "14px 0 0" }}>{t("AI prepares the decision. The designer makes it.", "AI 准备决策。设计师做出决策。")}</h2>
-            <p style={{ fontSize: 15.5, color: "var(--text-on-dark-mid)", marginTop: 13, lineHeight: 1.55, maxWidth: 420 }}>{t("A read-only assistant explains the impact, answers questions and drafts a report, but every model change still routes through Preview Impact and your confirmation.", "一个只读助手解释影响、回答提问、起草报告，但任何模型改动仍要经过“预览影响”与你的确认。")}</p>
+            <p style={{ fontSize: 15.5, color: "var(--text-on-dark-mid)", marginTop: 13, lineHeight: 1.55, maxWidth: 420 }}>{t("A read-only assistant explains, answers and drafts reports. Every model change still routes through Preview Impact and your confirmation.", "一个只读助手负责解释、回答与起草报告；任何模型改动仍要经过“预览影响”与你的确认。")}</p>
             {/* boundary ledger — read-only half, then commit half (lights up on scroll) */}
             <div style={{ marginTop: 22, maxWidth: 380 }}>
               <div style={{ fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--accent)", marginBottom: 9 }}>{t("The assistant may · read-only", "助手可以 · 只读")}</div>
@@ -405,7 +405,7 @@ function ChLab() {
         <div style={{ maxWidth: 740, marginBottom: 22, opacity: inView ? 1 : 0, transform: inView ? "none" : "translateY(18px)", transition: "opacity .55s var(--ease-out), transform .55s var(--ease-out)" }}>
           <Eyebrow idx="10">{t("Trust details", "信任细节")}</Eyebrow>
           <h2 style={{ fontSize: "clamp(1.7rem,1.2rem+1.6vw,2.6rem)", fontWeight: 500, color: "#fff", letterSpacing: "-0.025em", margin: "14px 0 0", lineHeight: 1.12 }}>{t("Small details make the system usable in real Revit projects.", "小细节决定系统能不能进入真实 Revit 项目。")}</h2>
-          <p style={{ fontSize: 15.5, color: "var(--text-on-dark-mid)", marginTop: 13, lineHeight: 1.55 }}>{t("StepWise is not only a new workspace. It must fit existing Revit models, existing stair types and existing team workflows: understandable while editing, safe across related systems, adoptable in active projects and traceable over time.", "StepWise 不只是一个新的工作台。它必须能进入已有的 Revit 模型、已有的楼梯类型与团队流程：编辑时可理解，关联系统间可控，进行中的项目可采用，并且能被长期追踪。")}</p>
+          <p style={{ fontSize: 15.5, color: "var(--text-on-dark-mid)", marginTop: 13, lineHeight: 1.55 }}>{t("A new workspace is not enough. It has to fit existing models, types and team workflows: understandable, safe across related systems, adoptable mid-project, and traceable over time.", "光有新工作台不够。它得装进已有的模型、类型与团队流程：可理解、关联系统间安全、进行中可采用、长期可追踪。")}</p>
         </div>
         {/* enlarged viewer — swaps with the hovered thumbnail */}
         <div style={{ borderRadius: "var(--r-lg)", border: "1px solid var(--line-on-dark-2)", background: "#070a0f", overflow: "hidden", boxShadow: "var(--shadow-float-dark)", opacity: inView ? 1 : 0, transform: inView ? "none" : "translateY(20px)", transition: "opacity .55s var(--ease-out) .08s, transform .55s var(--ease-out) .08s" }}>

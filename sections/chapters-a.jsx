@@ -191,8 +191,13 @@ function ChThesis() {
     <RightAct inRef={ref} label="01 Product direction" height="320vh" textMax={500}>
       <Eyebrow idx="01">{t("Product direction", "产品方向")}</Eyebrow>
       <h2 style={{ fontSize: "clamp(1.7rem,1.2rem+1.7vw,2.7rem)", fontWeight: 500, color: "#fff", letterSpacing: "-0.025em", margin: "16px 0", lineHeight: 1.12, textWrap: "balance" }}>{t("Revit is already reducing fragmented tool state.", "Revit 已经在减少工具状态的碎片化。")}</h2>
-      <p style={{ fontSize: 15.5, color: "var(--text-on-dark-hi)", lineHeight: 1.55, marginBottom: 12 }}>{t("In Revit 2026, stair creation settings like Location Line, Offset, Actual Run Width and Automatic Landing lived in the Options Bar, away from the contextual ribbon. In Revit 2027 those controls move into the Modify | Create Stair ribbon itself.", "在 Revit 2026 里，像 Location Line、Offset、Actual Run Width、Automatic Landing 这些楼梯创建参数位于 Options Bar，远离上下文工具栏。到 Revit 2027，它们被收进了 Modify | Create Stair 工具栏本身。")}</p>
-      <p style={{ fontSize: 15.5, color: "var(--text-on-dark-mid)", lineHeight: 1.55, marginBottom: 12 }}>{t("That is more than a layout change. It reduces how much users must scan between UI zones just to read the current tool state. The active tool, its key settings and its action now sit together.", "这不只是按钮换了位置。它减少了用户在不同界面区域之间来回扫视、只为读懂当前工具状态的成本。现在，当前工具、关键设置与动作入口被放在了一起。")}</p>
+      <div style={{ display: "grid", gridTemplateColumns: "auto 1fr", gap: "9px 12px", alignItems: "center", margin: "4px 0 14px" }}>
+        <span style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "var(--text-on-dark-lo)", border: "1px solid var(--line-on-dark)", borderRadius: "var(--r-pill)", padding: "3px 9px", whiteSpace: "nowrap", textAlign: "center" }}>2026</span>
+        <span style={{ fontSize: 14, color: "var(--text-on-dark-mid)", lineHeight: 1.4 }}>{t("Stair settings sit in the Options Bar, away from the ribbon.", "楼梯参数在 Options Bar，远离上下文工具栏。")}</span>
+        <span style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "var(--accent)", border: "1px solid var(--accent)", borderRadius: "var(--r-pill)", padding: "3px 9px", whiteSpace: "nowrap", textAlign: "center" }}>2027</span>
+        <span style={{ fontSize: 14, color: "#fff", lineHeight: 1.4 }}>{t("Folded into the Modify | Create Stair ribbon.", "收进 Modify | Create Stair 工具栏本身。")}</span>
+      </div>
+      <p style={{ fontSize: 14, color: "var(--text-on-dark-mid)", lineHeight: 1.5, marginBottom: 14 }}>{t("Less eye-travel to read the current tool state.", "要读懂当前工具状态，眼睛走的路更短了。")}</p>
       <p style={{ fontFamily: "var(--font-display)", fontSize: "clamp(1.05rem,0.95rem+0.5vw,1.35rem)", fontWeight: 500, color: "var(--typical-300)", lineHeight: 1.32, letterSpacing: "-0.01em", marginBottom: 16 }}>{t("StepWise follows the same direction, but applies it to a harder problem: not stair creation, but stair-system maintenance.", "StepWise 延续同一方向，但把它推进到更难的问题：不是创建楼梯，而是维护楼梯系统。")}</p>
       <figure style={{ margin: 0, borderRadius: "var(--r-md)", overflow: "hidden", border: "1px solid var(--line-on-dark-2)", background: "#0b0e13" }}
         onMouseEnter={(e) => { const im = e.currentTarget.querySelector("img"); if (im) im.style.transform = "scale(1.04)"; }}
@@ -230,8 +235,25 @@ function ChResearch() {
     <RightAct inRef={ref} label="02 Problem reframe" height="340vh" graphic={graphic} graphicAlign="center" textMax={490}>
       <Eyebrow idx="02">{t("Problem reframe", "问题重定义")}</Eyebrow>
       <h2 style={{ fontSize: "clamp(1.6rem,1.2rem+1.6vw,2.55rem)", fontWeight: 500, color: "#fff", letterSpacing: "-0.025em", margin: "16px 0", lineHeight: 1.12, textWrap: "balance" }}>{t("The hard part is not creating a stair. It is maintaining stair intent when the building changes.", "难点不是画出楼梯，而是在建筑变化后维护楼梯意图。")}</h2>
-      <p style={{ fontSize: 15.5, color: "var(--text-on-dark-hi)", lineHeight: 1.55, marginBottom: 12 }}>{t("The current workflow exposes parts: Stair Type, Run Type, Landing Type, Support, Railing, Baluster, Cut Mark. But Anna does not think in isolated types. She thinks in a stair system: East Stair, typical levels, equipment-floor exceptions, related West Stair conditions, and the drawings downstream.", "当前流程暴露给用户的是零散对象：Stair Type、Run Type、Landing Type、Support、Railing、Baluster、Cut Mark。但 Anna 想的不是孤立的类型，而是一整套楼梯系统：East Stair、典型层、设备层例外、关联的 West Stair 条件，以及下游图纸。")}</p>
-      <p style={{ fontSize: 15.5, color: "var(--text-on-dark-mid)", lineHeight: 1.55, marginBottom: 12 }}>{t("The mismatch is the core problem. Revit asks users to manage fragmented objects and hidden dependencies, while the design intent lives at the system level.", "这个错位就是核心问题：设计意图在系统层，工具却把它拆成了分散的对象和隐藏的依赖。")}</p>
+      <div style={{ display: "flex", flexDirection: "column", gap: 13, margin: "4px 0 14px" }}>
+        <div>
+          <div style={{ fontFamily: "var(--font-mono)", fontSize: 10.5, letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--text-on-dark-lo)", marginBottom: 7 }}>{t("Revit exposes parts", "Revit 暴露的是零件")}</div>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+            {[["Stair Type", "Stair Type"], ["Run Type", "Run Type"], ["Landing", "Landing"], ["Railing", "Railing"], ["Baluster", "Baluster"], ["Support", "Support"], ["Cut Mark", "Cut Mark"]].map((c, i) => (
+              <span key={i} style={{ fontFamily: "var(--font-mono)", fontSize: 11.5, color: "var(--text-on-dark-mid)", background: "rgba(255,255,255,0.04)", border: "1px solid var(--line-on-dark)", borderRadius: "var(--r-sm)", padding: "4px 9px" }}>{t(c[0], c[1])}</span>
+            ))}
+          </div>
+        </div>
+        <div>
+          <div style={{ fontFamily: "var(--font-mono)", fontSize: 10.5, letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--typical-300)", marginBottom: 7 }}>{t("The designer thinks in a system", "设计师想的是一套系统")}</div>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+            {[["East Stair", "East Stair"], ["typical levels", "典型层"], ["exceptions", "例外"], ["related West Stair", "关联 West Stair"], ["downstream drawings", "下游图纸"]].map((c, i) => (
+              <span key={i} style={{ fontFamily: "var(--font-mono)", fontSize: 11.5, color: "#fff", background: "rgba(61,125,255,0.14)", border: "1px solid var(--typical-400)", borderRadius: "var(--r-sm)", padding: "4px 9px" }}>{t(c[0], c[1])}</span>
+            ))}
+          </div>
+        </div>
+      </div>
+      <p style={{ fontSize: 14, color: "var(--text-on-dark-mid)", lineHeight: 1.5, marginBottom: 12 }}>{t("Intent lives at the system level; the tool splits it into objects and hidden dependencies.", "意图在系统层，工具却把它拆成零件和隐藏的依赖。")}</p>
       <p style={{ fontFamily: "var(--font-display)", fontSize: "clamp(1.05rem,0.95rem+0.5vw,1.35rem)", fontWeight: 500, color: "var(--typical-300)", lineHeight: 1.32 }}>{t("So I am not proposing another parameter panel. I am proposing a way to make stair intent visible, scoped and reviewable inside Revit's native workflow.", "所以我提的不是又一个参数面板，而是在 Revit 原生流程里，让楼梯意图变得可见、可定范围、可预览。")}</p>
       <ActProgress progress={progress} tint="var(--exception-400)" />
     </RightAct>);
@@ -249,7 +271,7 @@ function ChRootProblem() {
     {
       tint: "var(--typical-400)",
       title: ["Case signals", "题目信号"],
-      insight: ["The brief is not only about drawing stairs. It repeatedly describes maintenance failure.", "题目不只是说楼梯难画，而是在反复描述维护失效。"],
+      insight: ["The brief keeps describing maintenance failure, not just drawing.", "题目反复在说维护失效，而不只是画图难。"],
       bullets: [
         ["Floor-by-floor edits create repetitive work", "逐层修改造成重复工作"],
         ["Small changes force new types", "小改动也要新建类型"],
@@ -262,7 +284,7 @@ function ChRootProblem() {
     {
       tint: "var(--exception-400)",
       title: ["Practitioner feedback", "设计师反馈"],
-      insight: ["The pain is uneven, but it becomes sharp in model-heavy, change-heavy workflows.", "痛点不是平均分布的，但在建模重、变更多的流程里会变得很尖锐。"],
+      insight: ["Pain is uneven, but sharp in model-heavy, change-heavy work.", "痛点不均匀，但在建模重、变更多时很尖锐。"],
       bullets: [
         ["Some designers manage stairs once the tool is learned", "有些设计师学会后可以应对"],
         ["Schools / hospitals may not expose the worst repetition", "学校和医院项目不一定暴露最极端的重复"],
@@ -275,7 +297,7 @@ function ChRootProblem() {
     {
       tint: "var(--external-400)",
       title: ["Market scan", "市场扫描"],
-      insight: ["Most solutions help create stairs. Fewer help maintain stair intent inside Revit.", "多数工具帮助生成楼梯，很少工具帮助在 Revit 内维护楼梯意图。"],
+      insight: ["Most tools help create stairs; few maintain intent inside Revit.", "多数工具帮生成楼梯，很少帮在 Revit 内维护意图。"],
       bullets: [
         ["Stair generation tools", "楼梯生成工具"],
         ["Rebar and detailing tools", "钢筋和细部工具"],
@@ -384,7 +406,7 @@ function ChPrinciples() {
     <RightAct inRef={ref} label="04 Design principles" height="300vh" graphic={graphic} textMax={490}>
       <Eyebrow idx="04">{t("Design principles", "设计原则")}</Eyebrow>
       <h2 style={{ fontSize: "clamp(1.6rem,1.2rem+1.5vw,2.5rem)", fontWeight: 500, color: "#fff", letterSpacing: "-0.025em", margin: "16px 0", lineHeight: 1.12, textWrap: "balance" }}>{t("Design principles, grounded in Revit's native workflow.", "设计原则，扎在 Revit 原生工作流里。")}</h2>
-      <p style={{ fontSize: 15, color: "var(--text-on-dark-mid)", lineHeight: 1.55, marginBottom: 16 }}>{t("The goal is not to make Revit feel like a web app. It is to reorganize stair complexity inside the interaction model Revit users already understand: contextual ribbon entry points, dockable palettes, properties-style grouping, temporary preview states and an explicit Apply.", "目标不是把 Revit 做成网页应用，而是在 Revit 用户已经理解的交互模型里重新组织复杂性：上下文工具栏入口、可停靠面板、properties 式分组、临时预览状态，以及显式的 Apply。")}</p>
+      <p style={{ fontSize: 15, color: "var(--text-on-dark-mid)", lineHeight: 1.55, marginBottom: 16 }}>{t("Not a web app bolted onto Revit. The same complexity, reorganized inside patterns users already know: ribbon entry points, dockable palettes, properties-style grouping, preview, explicit Apply.", "不是把 Revit 做成网页应用，而是在用户已熟悉的交互里重组复杂性：工具栏入口、可停靠面板、properties 式分组、预览、显式 Apply。")}</p>
       <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
         {prins.map((p, i) => {
           const lit = i <= active;
@@ -424,7 +446,7 @@ function ChModelFirst() {
           <div style={{ width: "min(100%, 520px)", padding: "26px 30px", margin: "-26px -30px", borderRadius: 18, background: "radial-gradient(135% 130% at 18% 45%, rgba(0,0,0,0.84), rgba(0,0,0,0.5) 55%, transparent 82%)" }}>
             <Eyebrow idx="05">{t("Model-first setup", "明确建模")}</Eyebrow>
             <h2 style={{ fontSize: "clamp(1.6rem,1.2rem+1.5vw,2.5rem)", fontWeight: 500, color: "#fff", letterSpacing: "-0.025em", margin: "16px 0 10px", lineHeight: 1.13 }}>{t("Explicit modeling, not auto-generation.", "明确建模，不是自动生成。")}</h2>
-            <p style={{ fontSize: 15, color: "var(--text-on-dark-mid)", marginBottom: 8, lineHeight: 1.5 }}>{t("StepWise starts where Revit users already work: plan, levels, properties and preview. It covers boundary, level range, typical rule, preview and exceptions, and applies only after impact review.", "StepWise 从 Revit 用户已有的工作方式开始：平面、楼层、属性、预览。它覆盖边界、楼层范围、典型规则、预览与例外，并在影响审阅之后才提交。")}</p>
+            <p style={{ fontSize: 15, color: "var(--text-on-dark-mid)", marginBottom: 8, lineHeight: 1.5 }}>{t("StepWise starts where Revit users already work: plan, levels, properties, preview.", "StepWise 从 Revit 用户已有的地方开始：平面、楼层、属性、预览。")}</p>
             <p style={{ fontSize: 13.5, color: "var(--text-on-dark-lo)", marginBottom: 18, lineHeight: 1.5 }}>{t("BIM users need control. The system can assist, check and preview, but it should not silently decide geometry, scope or exceptions.", "BIM 用户需要控制感。系统可以辅助、检查、预览，但不应静默决定几何、范围或例外。")}</p>
             <div style={{ display: "flex", flexDirection: "column", gap: 1 }}>
               {steps.map((st, i) => {
